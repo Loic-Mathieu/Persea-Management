@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "application.display.width",
+      "type": "java.lang.Integer",
+      "description": "Default width to display."
+    },
+    {
+      "name": "application.display.heigth",
+      "type": "java.lang.Integer",
+      "description": "Default height to display."
+    }
+  ] }
