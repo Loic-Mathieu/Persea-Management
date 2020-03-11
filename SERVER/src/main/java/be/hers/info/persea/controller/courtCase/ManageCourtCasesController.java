@@ -2,7 +2,7 @@ package be.hers.info.persea.controller.courtCase;
 
 import be.hers.info.persea.config.AppContext;
 import be.hers.info.persea.controller.IController;
-import be.hers.info.persea.dao.CourtCaseDao;
+import be.hers.info.persea.dao.courtcase.CourtCaseDao;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.view.ManageCourtCaseView;
 import be.hers.info.persea.view.PerseaView;

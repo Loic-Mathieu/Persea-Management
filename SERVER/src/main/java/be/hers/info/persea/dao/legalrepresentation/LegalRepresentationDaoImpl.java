@@ -1,4 +1,4 @@
-package be.hers.info.persea.dao;
+package be.hers.info.persea.dao.legalrepresentation;
 
 import be.hers.info.persea.model.LegalRepresentation;
 import org.springframework.stereotype.Component;
@@ -31,18 +31,10 @@ public class LegalRepresentationDaoImpl implements LegalRepresentationDao {
     }
 
     @Override
-    public LegalRepresentation getById(long id) {
+    public LegalRepresentation findById(long id) {
         try {
             return em.find(LegalRepresentation.class, id);
         } catch (EntityNotFoundException e) {throw e;}
-    }
-
-    @Override
-    public List<LegalRepresentation> getAll() {
-        CriteriaQuery<LegalRepresentation> criteriaQuery = em.getCriteriaBuilder().createQuery(LegalRepresentation.class);
-        @SuppressWarnings("unused")
-        Root<LegalRepresentation> root = criteriaQuery.from(LegalRepresentation.class);
-        return em.createQuery(criteriaQuery).getResultList();
     }
 
     @Override

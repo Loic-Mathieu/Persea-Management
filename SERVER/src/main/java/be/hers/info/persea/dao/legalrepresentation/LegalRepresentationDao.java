@@ -1,5 +1,6 @@
-package be.hers.info.persea.dao;
+package be.hers.info.persea.dao.legalrepresentation;
 
+import be.hers.info.persea.dao.IDAOCrud;
 import be.hers.info.persea.model.LegalRepresentation;
 
 import java.util.List;

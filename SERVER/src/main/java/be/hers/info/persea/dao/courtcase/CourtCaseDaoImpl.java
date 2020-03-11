@@ -1,4 +1,4 @@
-package be.hers.info.persea.dao;
+package be.hers.info.persea.dao.courtcase;
 
 import be.hers.info.persea.model.courtCase.CourtCase;
 import org.springframework.stereotype.Component;
@@ -25,12 +25,7 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
     }
 
     @Override
-    public CourtCase getById(long id) {
-        return null;
-    }
-
-    @Override
-    public List<CourtCase> getAll() {
+    public CourtCase findById(long id) {
         return null;
     }
 

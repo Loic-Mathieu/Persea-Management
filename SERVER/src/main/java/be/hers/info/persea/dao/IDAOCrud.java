@@ -2,7 +2,7 @@ package be.hers.info.persea.dao;
 
 import java.util.List;
 
-interface IDAOCrud<T> {
+public interface IDAOCrud<T> {
 
     /**
      * Adds one element in the table T
@@ -21,13 +21,7 @@ interface IDAOCrud<T> {
      * @param id id of the target element
      * @return the element from the table T with the targeted id
      */
-    public T getById(long id);
-
-    /**
-     * Get all elements of the table T
-     * @return a list of all T elements
-     */
-    public List<T> getAll();
+    public T findById(long id);
 
     /**
      * Delete the element in table T with targeted id

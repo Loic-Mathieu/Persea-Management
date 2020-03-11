@@ -1,7 +1,7 @@
 package be.hers.info.persea.controller.courtCase;
 
 import be.hers.info.persea.controller.IController;
-import be.hers.info.persea.dao.TagDao;
+import be.hers.info.persea.dao.tag.TagDao;
 import be.hers.info.persea.documents.FileReader;
 import be.hers.info.persea.documents.word.WordFileReader;
 import be.hers.info.persea.exceptions.InvalidTagException;

@@ -1,4 +1,4 @@
-package be.hers.info.persea.dao;
+package be.hers.info.persea.dao.tag;
 
 import be.hers.info.persea.model.document.Tag;
 import org.springframework.stereotype.Component;
@@ -41,12 +41,7 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public Tag getById(long id) {
-        return null;
-    }
-
-    @Override
-    public List<Tag> getAll() {
+    public Tag findById(long id) {
         return null;
     }
 
