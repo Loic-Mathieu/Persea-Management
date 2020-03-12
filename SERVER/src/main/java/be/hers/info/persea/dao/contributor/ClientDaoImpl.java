@@ -1,7 +1,6 @@
 package be.hers.info.persea.dao.contributor;
 
 import be.hers.info.persea.model.contibutor.Client;
-import be.hers.info.persea.model.document.Tag;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
