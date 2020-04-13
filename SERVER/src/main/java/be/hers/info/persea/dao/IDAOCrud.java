@@ -21,7 +21,7 @@ public interface IDAOCrud<T> {
      * @param id id of the target element
      * @return the element from the table T with the targeted id
      */
-    public T findById(long id);
+    public T getById(long id);
 
     /**
      * Delete the element in table T with targeted id

@@ -1,6 +1,7 @@
 package be.hers.info.persea.dao.contributor;
 
 import be.hers.info.persea.model.contibutor.Client;
+import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -20,7 +21,7 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public void addOne(Client newElement) {
-
+        // Todo implements method
     }
 
     @Override
@@ -29,7 +30,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Client findById(long id) {
+    public Client getById(long id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
 
@@ -40,8 +41,16 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Client find(Map<String, String> filter) {
-        return null;
+    public List<Client> find(Map<String, String> filter) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Client> cq = cb.createQuery(Client.class);
+        Root<Client> clientRoot = cq.from(Client.class);
+
+        if (filter == null) {
+            return em.createQuery(cq).getResultList();
+        }
+
+        throw new NotImplementedException("Can't be filtered");
     }
 
     @Override

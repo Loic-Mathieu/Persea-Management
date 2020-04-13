@@ -1,7 +1,8 @@
 package be.hers.info.persea.service;
 
-import be.hers.info.persea.model.contibutor.Client;
+import be.hers.info.persea.exceptions.BadRequestException;
+import be.hers.info.persea.request.CreateClientRequest;
 
 public interface ClientService {
-    long createClient(Client client);
+    long createClient(CreateClientRequest body) throws BadRequestException;
 }
