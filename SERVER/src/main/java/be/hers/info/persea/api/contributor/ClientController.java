@@ -1,14 +1,12 @@
 package be.hers.info.persea.api.contributor;
 
 import be.hers.info.persea.dao.contributor.ClientDao;
+import be.hers.info.persea.dto.contributor.ClientDto;
 import be.hers.info.persea.model.contibutor.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/rest/client")
@@ -27,9 +25,15 @@ public class ClientController {
         return "Greetings from Spring Boot!";
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/{id:[0-9]+}")
-    public ResponseEntity<Client> getStudents(@PathVariable long id) {
+    public ResponseEntity<ClientDto> getStudents(@PathVariable long id) {
         Client client = this.clientDao.findById(id);
-        return new ResponseEntity<>(client, HttpStatus.OK);
+        return new ResponseEntity<>(new ClientDto(client), HttpStatus.OK);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<Long> createStudent(RequestBody requestBody) {
+        return new ResponseEntity<Long>(0L, HttpStatus.CREATED);
     }
 }
