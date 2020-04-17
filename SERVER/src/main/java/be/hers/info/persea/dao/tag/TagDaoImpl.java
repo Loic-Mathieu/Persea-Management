@@ -41,7 +41,7 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public Tag findById(long id) {
+    public Tag getById(long id) {
         return null;
     }
 

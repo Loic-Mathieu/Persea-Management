@@ -4,7 +4,7 @@ import be.hers.info.persea.dao.contributor.ClientDao;
 import be.hers.info.persea.dto.contributor.ClientDto;
 import be.hers.info.persea.model.contibutor.Client;
 import be.hers.info.persea.request.CreateClientRequest;
-import be.hers.info.persea.service.ClientService;
+import be.hers.info.persea.service.contributor.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

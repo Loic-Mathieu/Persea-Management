@@ -4,7 +4,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.IOException;
 
-public interface FileReader {
+public interface PerseaFileReader {
     String readFile();
 
     String readHeader();

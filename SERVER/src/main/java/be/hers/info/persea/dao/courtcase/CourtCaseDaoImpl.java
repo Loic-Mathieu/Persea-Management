@@ -25,7 +25,7 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
     }
 
     @Override
-    public CourtCase findById(long id) {
+    public CourtCase getById(long id) {
         return null;
     }
 
@@ -40,7 +40,7 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
     }
 
     @Override
-    public CourtCase find(Map<String, String> filter) {
+    public List<CourtCase> find(Map<String, String> filter) {
         return null;
     }
 

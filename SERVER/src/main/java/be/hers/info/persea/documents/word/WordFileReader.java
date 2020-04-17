@@ -1,6 +1,6 @@
 package be.hers.info.persea.documents.word;
 
-import be.hers.info.persea.documents.FileReader;
+import be.hers.info.persea.documents.PerseaFileReader;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
@@ -10,7 +10,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class WordFileReader implements FileReader {
+public class WordFileReader implements PerseaFileReader {
+
+    public static String DOCUMENT_SUFFIX = ".docx";
 
     private XWPFDocument document;
 

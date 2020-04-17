@@ -1,4 +1,4 @@
-package be.hers.info.persea.service;
+package be.hers.info.persea.service.contributor;
 
 import be.hers.info.persea.exceptions.BadRequestException;
 import be.hers.info.persea.request.CreateClientRequest;

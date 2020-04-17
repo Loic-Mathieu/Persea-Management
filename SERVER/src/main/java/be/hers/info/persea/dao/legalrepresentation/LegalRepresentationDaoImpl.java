@@ -31,7 +31,7 @@ public class LegalRepresentationDaoImpl implements LegalRepresentationDao {
     }
 
     @Override
-    public LegalRepresentation findById(long id) {
+    public LegalRepresentation getById(long id) {
         try {
             return em.find(LegalRepresentation.class, id);
         } catch (EntityNotFoundException e) {throw e;}

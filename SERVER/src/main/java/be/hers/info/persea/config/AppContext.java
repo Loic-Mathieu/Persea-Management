@@ -9,10 +9,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 @Configuration
-@ComponentScan(basePackages = { "be.hers.info.persea.dao",
-                                "be.hers.info.persea.controller",
-                                "be.hers.info.persea.view"
-                            })
+@ComponentScan(basePackages = {
+    "be.hers.info.persea.dao",
+    "be.hers.info.persea.service",
+})
 public class AppContext {
     private final EntityManagerFactory factory = Persistence.createEntityManagerFactory("persea.database");
 
