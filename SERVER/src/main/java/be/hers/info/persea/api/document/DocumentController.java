@@ -1,5 +1,6 @@
 package be.hers.info.persea.api.document;
 
+import be.hers.info.persea.exceptions.TagCreationException;
 import be.hers.info.persea.service.document.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,8 +28,8 @@ public class DocumentController {
         try {
             String text = this.documentService.createDocument(file, caseSeq);
             return ResponseEntity.status(HttpStatus.OK).body(text);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Failed to upload!");
+        } catch (TagCreationException e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
         }
     }
 }

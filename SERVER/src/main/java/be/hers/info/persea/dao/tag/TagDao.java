@@ -7,5 +7,5 @@ import javax.persistence.EntityNotFoundException;
 
 
 public interface TagDao extends IDAOCrud<Tag> {
-    Tag findByName(String tagName) throws EntityNotFoundException;
+    Tag getByName(String tagName) throws EntityNotFoundException;
 }
