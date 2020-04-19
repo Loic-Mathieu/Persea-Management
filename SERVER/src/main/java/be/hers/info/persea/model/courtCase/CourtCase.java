@@ -3,7 +3,7 @@ package be.hers.info.persea.model.courtCase;
 import be.hers.info.persea.model.LegalRepresentation;
 import be.hers.info.persea.model.courtCase.caseState.CaseState;
 import be.hers.info.persea.model.courtCase.caseState.CaseStateContext;
-import be.hers.info.persea.model.courtCase.caseState.CaseStateType;
+import be.hers.info.persea.model.courtCase.caseState.CaseStateKey;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,12 +18,16 @@ import java.util.List;
 @Table(name = "T_CASE")
 public class CourtCase {
     @Id
-    @Column(name = "caseNumber", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idCase", nullable = false)
+    private long id;
+
+    @Column(name = "caseNumber", nullable = false, unique = true)
     private String caseNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "caseState", nullable = false)
-    private CaseStateType stateType;
+    private CaseStateKey stateType;
     @Transient
     private CaseState state;
 
@@ -54,7 +58,7 @@ public class CourtCase {
 
     public CourtCase(String caseNumber) {
         this.caseNumber = caseNumber;
-        this.stateType = CaseStateType.Open;
+        this.stateType = CaseStateKey.OPEN;
 
         this.creationDate = Calendar.getInstance().getTime();
     }

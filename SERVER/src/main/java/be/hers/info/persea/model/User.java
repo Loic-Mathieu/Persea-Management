@@ -21,6 +21,7 @@ public class User {
     @Column(name = "idUser", nullable = false)
     private long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 

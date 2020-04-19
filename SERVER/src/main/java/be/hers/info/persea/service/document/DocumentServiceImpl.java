@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.NoResultException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -88,7 +89,7 @@ public class DocumentServiceImpl implements DocumentService {
             CourtCase courtCase = this.courtCaseDao.getById(caseId);
             // TODO get connected user
             // Change unit test
-            User user = this.userDao.getById(42L);
+            User user = this.userDao.getById(1L);
 
             // TODO get REGEX from db
             final Pattern TAG_PATTERN = Pattern.compile("<<(.+?)>>", Pattern.DOTALL);
@@ -124,11 +125,17 @@ public class DocumentServiceImpl implements DocumentService {
                 matcher.appendReplacement(buffer, translatedTag);
             }
 
+            if (buffer.length() <= 0) {
+                throw new TagCreationException("No tag found in the document");
+            }
+
             return buffer.toString();
         } catch (IOException e) {
             throw new TagCreationException("The file cannot be opened");
         } catch (InvalidFormatException e) {
             throw new TagCreationException("Bad Format");
+        } catch (NoResultException e) {
+            throw new TagCreationException("Missing target data");
         } catch (InvalidTagException e) {
             throw new TagCreationException("Bad Tag: \n" + e.getMessage());
         }
