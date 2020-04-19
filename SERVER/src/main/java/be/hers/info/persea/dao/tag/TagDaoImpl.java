@@ -18,7 +18,7 @@ public class TagDaoImpl implements TagDao {
     private EntityManager em;
 
     @Override
-    public Tag findByName(String tagName) {
+    public Tag getByName(String tagName) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Tag> cq = cb.createQuery(Tag.class);
         Root<Tag> tagsRoot = cq.from(Tag.class);
@@ -53,7 +53,7 @@ public class TagDaoImpl implements TagDao {
 
     @Transactional
     @Override
-    public void put(long id, Tag newElement) {
+    public void update(long id, Tag newElement) {
 
     }
 }

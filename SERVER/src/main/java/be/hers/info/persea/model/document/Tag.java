@@ -20,12 +20,12 @@ public class Tag {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "tagProprety", nullable = false)
-    private Proprety proprety;
+    private PerseaProperty property;
 
     public Tag() {}
 
-    public Tag(String name, Proprety proprety) {
+    public Tag(String name, PerseaProperty property) {
         this.name = name;
-        this.proprety = proprety;
+        this.property = property;
     }
 }

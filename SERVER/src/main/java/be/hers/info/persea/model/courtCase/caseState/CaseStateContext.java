@@ -4,16 +4,10 @@ public class CaseStateContext {
 
     private CaseStateContext() {}
 
-    public static CaseState translateState(CaseStateType stateType) {
-        switch (stateType) {
-            case Open:
-                return null;
-            case Closed:
-                return null;
-            case Archived:
-                return null;
+    public static CaseState translateState(CaseStateKey stateKey) {
+        switch (stateKey) {
+            default:
+                throw new IllegalArgumentException("Invalid case state");
         }
-
-        throw new IllegalArgumentException("Invalid case state");
     }
 }

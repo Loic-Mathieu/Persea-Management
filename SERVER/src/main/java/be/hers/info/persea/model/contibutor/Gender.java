@@ -12,13 +12,13 @@ public enum Gender {
     }
 
     public static Gender findByCode(int code) {
-        for (Gender gender : values()) {
-            if (gender.code == code) {
-                return gender;
-            }
+        switch (code) {
+            case 0:
+                return MALE;
+            case 1:
+                return FEMALE;
+            default:
+                return OTHER;
         }
-
-        // None found => default
-        return Gender.OTHER;
     }
 }

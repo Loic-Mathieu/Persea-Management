@@ -19,6 +19,7 @@ public class ClientDaoImpl implements ClientDao {
     @PersistenceContext(name = "localDatabase", type = PersistenceContextType.TRANSACTION)
     private EntityManager em;
 
+    /*  === CRUD === */
     @Override
     public void addOne(Client newElement) {
         // Todo implements method
@@ -41,6 +42,17 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
+    public void remove(long id) {
+
+    }
+
+    @Override
+    public void update(long id, Client newElement) {
+
+    }
+
+    /*  === FILTERS === */
+    @Override
     public List<Client> find(Map<String, String> filter) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
@@ -51,15 +63,5 @@ public class ClientDaoImpl implements ClientDao {
         }
 
         throw new NotImplementedException("Can't be filtered");
-    }
-
-    @Override
-    public void remove(long id) {
-
-    }
-
-    @Override
-    public void put(long id, Client newElement) {
-
     }
 }

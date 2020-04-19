@@ -43,7 +43,7 @@ public class LegalRepresentationDaoImpl implements LegalRepresentationDao {
     }
 
     @Override
-    public void put(long id, LegalRepresentation newElement) {
+    public void update(long id, LegalRepresentation newElement) {
 
     }
 

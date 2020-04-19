@@ -28,7 +28,7 @@ public class AddressDaoImpl implements AddressDao {
     }
 
     @Override
-    public void put(long id, Address newElement) {
+    public void update(long id, Address newElement) {
 
     }
 }
