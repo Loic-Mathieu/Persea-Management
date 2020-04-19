@@ -35,7 +35,7 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
     }
 
     @Override
-    public void put(long id, CourtCase newElement) {
+    public void update(long id, CourtCase newElement) {
 
     }
 

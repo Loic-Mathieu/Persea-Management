@@ -34,5 +34,5 @@ public interface IDAOCrud<T> {
      * @param id id of the target element
      * @param newElement element to update
      */
-    public void put(long id, T newElement);
+    public void update(long id, T newElement);
 }
