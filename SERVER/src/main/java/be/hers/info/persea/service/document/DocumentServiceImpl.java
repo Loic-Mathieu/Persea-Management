@@ -3,8 +3,11 @@ package be.hers.info.persea.service.document;
 import be.hers.info.persea.dao.courtcase.CourtCaseDao;
 import be.hers.info.persea.dao.tag.TagDao;
 import be.hers.info.persea.dao.user.UserDao;
-import be.hers.info.persea.documents.PerseaFileReader;
-import be.hers.info.persea.documents.word.WordFileReader;
+import be.hers.info.persea.interpreter.CourtCasePropertyInterpreter;
+import be.hers.info.persea.interpreter.UserPropertyInterpreter;
+import be.hers.info.persea.interpreter.UtilPropertyInterpreter;
+import be.hers.info.persea.util.documents.PerseaFileReader;
+import be.hers.info.persea.util.documents.word.WordFileReader;
 import be.hers.info.persea.exceptions.InvalidTagException;
 import be.hers.info.persea.exceptions.TagCreationException;
 import be.hers.info.persea.model.User;
@@ -51,33 +54,6 @@ public class DocumentServiceImpl implements DocumentService {
         return tempFile;
     }
 
-    private String translateCaseTag(Tag tag, CourtCase model) throws InvalidTagException {
-        switch (tag.getProperty()) {
-            case CASE_NUMBER:
-                return model.getCaseNumber();
-            default:
-                throw new InvalidTagException(tag, PerseaProperty.PropertyType.CASE);
-        }
-    }
-
-    private String translateStaticTag(Tag tag, User model) throws InvalidTagException {
-        switch (tag.getProperty()) {
-            case USER_NAME:
-                return model.getLastName();
-            default:
-                throw new InvalidTagException(tag, PerseaProperty.PropertyType.STATIC);
-        }
-    }
-
-    private String translateDynamicTag(Tag tag) throws InvalidTagException {
-        switch (tag.getProperty()) {
-            case CURRENT_DATE:
-                return PerseaDate.getStandardFormattedDate();
-            default:
-                throw new InvalidTagException(tag, PerseaProperty.PropertyType.DYNAMIC);
-        }
-    }
-
     /*  === PUBLIC FUNCTIONS ===    */
 
     @Override
@@ -87,9 +63,14 @@ public class DocumentServiceImpl implements DocumentService {
             String rawText = fileReader.readFile();
 
             CourtCase courtCase = this.courtCaseDao.getById(caseId);
+            CourtCasePropertyInterpreter courtCasePropertyInterpreter = new CourtCasePropertyInterpreter(courtCase);
+
             // TODO get connected user
             // Change unit test
             User user = this.userDao.getById(1L);
+            UserPropertyInterpreter userPropertyInterpreter = new UserPropertyInterpreter(user);
+
+            UtilPropertyInterpreter utilPropertyInterpreter = new UtilPropertyInterpreter();
 
             // TODO get REGEX from db
             final Pattern TAG_PATTERN = Pattern.compile("<<(.+?)>>", Pattern.DOTALL);
@@ -106,13 +87,13 @@ public class DocumentServiceImpl implements DocumentService {
 
                     switch (tag.getProperty().getPropertyType()) {
                         case CASE:
-                            translatedTag = this.translateCaseTag(tag, courtCase);
+                            translatedTag = courtCasePropertyInterpreter.interpret(tag.getProperty());
                             break;
                         case STATIC:
-                            translatedTag = this.translateStaticTag(tag, user);
+                            translatedTag = userPropertyInterpreter.interpret(tag.getProperty());
                             break;
                         case DYNAMIC:
-                            translatedTag = this.translateDynamicTag(tag);
+                            translatedTag = utilPropertyInterpreter.interpret(tag.getProperty());
                             break;
                         default:
                             throw new InvalidTagException(tag);

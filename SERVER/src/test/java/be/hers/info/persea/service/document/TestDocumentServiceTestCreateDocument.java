@@ -1,6 +1,6 @@
 package be.hers.info.persea.service.document;
 
-import be.hers.info.persea.documents.word.WordFileWriter;
+import be.hers.info.persea.util.documents.word.WordFileWriter;
 import be.hers.info.persea.exceptions.TagCreationException;
 import be.hers.info.persea.model.User;
 import be.hers.info.persea.model.courtCase.CourtCase;

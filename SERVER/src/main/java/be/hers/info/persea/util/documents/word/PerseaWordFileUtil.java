@@ -1,4 +1,4 @@
-package be.hers.info.persea.documents.word;
+package be.hers.info.persea.util.documents.word;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
