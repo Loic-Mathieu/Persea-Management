@@ -1,10 +1,12 @@
 package be.hers.info.persea.model;
 
 import be.hers.info.persea.model.contibutor.Gender;
+import be.hers.info.persea.model.courtCase.CourtCase;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -53,4 +55,7 @@ public class User {
 
     @Column(nullable = false, unique=true)
     private String mail;
+
+    @ManyToMany
+    private List<CourtCase> courtCases;
 }

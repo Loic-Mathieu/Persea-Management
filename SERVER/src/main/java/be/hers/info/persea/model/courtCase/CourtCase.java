@@ -1,6 +1,9 @@
 package be.hers.info.persea.model.courtCase;
 
 import be.hers.info.persea.model.LegalRepresentation;
+import be.hers.info.persea.model.User;
+import be.hers.info.persea.model.contibutor.Client;
+import be.hers.info.persea.model.contibutor.Opposition;
 import be.hers.info.persea.model.courtCase.caseState.CaseState;
 import be.hers.info.persea.model.courtCase.caseState.CaseStateContext;
 import be.hers.info.persea.model.courtCase.caseState.CaseStateKey;
@@ -8,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -43,10 +47,23 @@ public class CourtCase {
     @Column(name = "paymentDate")
     private Date paymentDate;
 
-    @OneToMany(mappedBy = "courtCase")
-    List<LegalRepresentation> legalRepresentations;
+    @Column(nullable = false)
+    private long mainClientId;
+    @ManyToMany()
+    List<Client> clients;
 
-    public CaseState getCaseState() {
+    @Column(nullable = false)
+    private long mainOppositionId;
+    @ManyToMany
+    List<Opposition> oppositions;
+
+    @OneToMany(mappedBy = "courtCase")
+    private List<LegalRepresentation> legalRepresentations;
+
+    @ManyToMany
+    private List<User> owners;
+
+    public CaseState getState() {
         if (state == null) {
             this.state = CaseStateContext.translateState(stateType);
         }
@@ -61,5 +78,10 @@ public class CourtCase {
         this.stateType = CaseStateKey.OPEN;
 
         this.creationDate = Calendar.getInstance().getTime();
+
+        this.clients = new ArrayList<>();
+        this.oppositions = new ArrayList<>();
+
+        this.legalRepresentations = new ArrayList<>();
     }
 }
