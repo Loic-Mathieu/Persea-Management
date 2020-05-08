@@ -47,4 +47,9 @@ public class UserDaoImpl implements UserDao {
     public void update(long id, User newElement) {
 
     }
+
+    @Override
+    public int getCasesCount(long userId) {
+        return 0;
+    }
 }

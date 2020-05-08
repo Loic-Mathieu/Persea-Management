@@ -11,5 +11,5 @@ public interface CourtCaseDao extends IDAOCrud<CourtCase>, IDAOFilter<CourtCase>
      *
      * @return
      */
-    List<CourtCase> findByUser();
+    List<CourtCase> findByUser(long userId);
 }

@@ -31,7 +31,7 @@ public class TagDaoImpl implements TagDao {
     public void addOne(Tag newElement) {
         em.getTransaction().begin();
         em.persist(newElement);
-        System.out.println("Added");
+        System.out.println("Added"); // TODO remove test
         em.getTransaction().commit();
     }
 
