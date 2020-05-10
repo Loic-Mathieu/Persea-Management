@@ -10,7 +10,7 @@ import be.hers.info.persea.util.documents.PerseaFileReader;
 import be.hers.info.persea.util.documents.word.WordFileReader;
 import be.hers.info.persea.exceptions.InvalidTagException;
 import be.hers.info.persea.exceptions.TagCreationException;
-import be.hers.info.persea.model.User;
+import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.model.document.Tag;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;

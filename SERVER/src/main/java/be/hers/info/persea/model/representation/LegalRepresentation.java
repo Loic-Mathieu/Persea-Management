@@ -1,5 +1,6 @@
-package be.hers.info.persea.model;
+package be.hers.info.persea.model.representation;
 
+import be.hers.info.persea.model.PerseaAuditable;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import lombok.Getter;
 
@@ -7,9 +8,9 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Getter
-@Entity
+@Entity(name = "PERSEA_REPRESENTATION")
 @Table(name = "T_REPRESENTATION")
-public class LegalRepresentation {
+public class LegalRepresentation extends PerseaAuditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idRepresentation", nullable = false)

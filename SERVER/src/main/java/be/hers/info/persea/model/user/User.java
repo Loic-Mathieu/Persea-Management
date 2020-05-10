@@ -1,5 +1,7 @@
-package be.hers.info.persea.model;
+package be.hers.info.persea.model.user;
 
+import be.hers.info.persea.model.PerseaAuditable;
+import be.hers.info.persea.model.address.Address;
 import be.hers.info.persea.model.contibutor.Gender;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import lombok.Getter;
@@ -10,11 +12,11 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity
+@Entity(name = "PERSEA_USER")
 @Table(name = "T_PERSEA_USER")
 // TODO implements 'UserDetails'
 // https://blog.invivoo.com/securiser-application-spring-boot-spring-security/
-public class User {
+public class User extends PerseaAuditable {
 
     public User() { }
 

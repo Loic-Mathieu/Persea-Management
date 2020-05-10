@@ -1,5 +1,6 @@
-package be.hers.info.persea.model;
+package be.hers.info.persea.model.address;
 
+import be.hers.info.persea.model.PerseaAuditable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,9 +8,9 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity
+@Entity(name = "PERSEA_ADDRESS")
 @Table(name = "T_ADDRESS")
-public class Address {
+public class Address extends PerseaAuditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idAddress", nullable = false)

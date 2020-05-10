@@ -1,6 +1,7 @@
 package be.hers.info.persea.model.contibutor;
 
-import be.hers.info.persea.model.Address;
+import be.hers.info.persea.model.PerseaAuditable;
+import be.hers.info.persea.model.address.Address;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @DiscriminatorColumn(name = "contributor_type")
 @Table(name = "T_CONTRIBUTOR")
-public abstract class Contributor {
+public abstract class Contributor extends PerseaAuditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idContributor", nullable = false)

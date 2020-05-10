@@ -1,6 +1,6 @@
 package be.hers.info.persea.dto.courtCase;
 
-import be.hers.info.persea.model.User;
+import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import lombok.Getter;
 

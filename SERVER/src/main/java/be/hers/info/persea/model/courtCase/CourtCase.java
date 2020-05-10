@@ -1,7 +1,8 @@
 package be.hers.info.persea.model.courtCase;
 
-import be.hers.info.persea.model.LegalRepresentation;
-import be.hers.info.persea.model.User;
+import be.hers.info.persea.model.PerseaAuditable;
+import be.hers.info.persea.model.representation.LegalRepresentation;
+import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.contibutor.Client;
 import be.hers.info.persea.model.contibutor.Opposition;
 import be.hers.info.persea.model.courtCase.caseState.CaseState;
@@ -12,7 +13,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "T_CASE")
-public class CourtCase {
+public class CourtCase extends PerseaAuditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idCase", nullable = false)
@@ -34,10 +34,6 @@ public class CourtCase {
     private CaseStateKey stateType;
     @Transient
     private CaseState state;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "creationDate", nullable = false)
-    private Date creationDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "closeDate")
@@ -76,8 +72,6 @@ public class CourtCase {
     public CourtCase(String caseNumber) {
         this.caseNumber = caseNumber;
         this.stateType = CaseStateKey.OPEN;
-
-        this.creationDate = Calendar.getInstance().getTime();
 
         this.clients = new ArrayList<>();
         this.oppositions = new ArrayList<>();

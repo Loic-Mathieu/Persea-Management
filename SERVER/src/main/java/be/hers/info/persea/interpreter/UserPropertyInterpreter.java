@@ -1,6 +1,6 @@
 package be.hers.info.persea.interpreter;
 
-import be.hers.info.persea.model.User;
+import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.document.PerseaProperty;
 
 public class UserPropertyInterpreter implements PropertyInterpreter {

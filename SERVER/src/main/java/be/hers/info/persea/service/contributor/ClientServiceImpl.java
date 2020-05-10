@@ -3,7 +3,7 @@ package be.hers.info.persea.service.contributor;
 import be.hers.info.persea.dao.address.AddressDao;
 import be.hers.info.persea.dao.contributor.ClientDao;
 import be.hers.info.persea.exceptions.BadRequestException;
-import be.hers.info.persea.model.Address;
+import be.hers.info.persea.model.address.Address;
 import be.hers.info.persea.model.contibutor.Client;
 import be.hers.info.persea.model.contibutor.Gender;
 import be.hers.info.persea.request.CreateClientRequest;

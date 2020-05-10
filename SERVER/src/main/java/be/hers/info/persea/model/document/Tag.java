@@ -1,5 +1,6 @@
 package be.hers.info.persea.model.document;
 
+import be.hers.info.persea.model.PerseaAuditable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "T_TAG")
-public class Tag {
+public class Tag extends PerseaAuditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idTag", nullable = false)

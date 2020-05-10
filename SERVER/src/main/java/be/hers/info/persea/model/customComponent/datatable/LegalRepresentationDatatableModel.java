@@ -1,6 +1,6 @@
 package be.hers.info.persea.model.customComponent.datatable;
 
-import be.hers.info.persea.model.LegalRepresentation;
+import be.hers.info.persea.model.representation.LegalRepresentation;
 
 import java.util.ArrayList;
 import java.util.List;

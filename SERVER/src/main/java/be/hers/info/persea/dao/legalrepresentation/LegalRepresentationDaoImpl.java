@@ -1,14 +1,12 @@
 package be.hers.info.persea.dao.legalrepresentation;
 
-import be.hers.info.persea.model.LegalRepresentation;
+import be.hers.info.persea.model.representation.LegalRepresentation;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import java.util.List;
 

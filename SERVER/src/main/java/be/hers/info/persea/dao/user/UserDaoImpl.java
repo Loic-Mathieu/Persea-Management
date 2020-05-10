@@ -1,6 +1,6 @@
 package be.hers.info.persea.dao.user;
 
-import be.hers.info.persea.model.User;
+import be.hers.info.persea.model.user.User;
 
 import org.springframework.stereotype.Component;
 

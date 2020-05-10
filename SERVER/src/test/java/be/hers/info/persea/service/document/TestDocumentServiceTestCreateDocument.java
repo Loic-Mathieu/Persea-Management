@@ -2,7 +2,7 @@ package be.hers.info.persea.service.document;
 
 import be.hers.info.persea.util.documents.word.WordFileWriter;
 import be.hers.info.persea.exceptions.TagCreationException;
-import be.hers.info.persea.model.User;
+import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.model.document.PerseaProperty;
 import be.hers.info.persea.model.document.Tag;

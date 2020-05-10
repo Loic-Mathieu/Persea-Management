@@ -1,7 +1,6 @@
 package be.hers.info.persea.dao.courtcase;
 
-import be.hers.info.persea.model.User;
-import be.hers.info.persea.model.contibutor.Client;
+import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
