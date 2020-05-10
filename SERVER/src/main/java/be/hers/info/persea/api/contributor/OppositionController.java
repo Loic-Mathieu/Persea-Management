@@ -31,7 +31,7 @@ public class OppositionController {
     }
 
     @GetMapping("/{id:[0-9]+}")
-    public ResponseEntity<OppositionDto> getClient(@PathVariable long id) {
+    public ResponseEntity<OppositionDto> getOpposition(@PathVariable long id) {
         try {
             Opposition opposition = this.oppositionDao.getById(id);
             return new ResponseEntity<>(new OppositionDto(opposition), HttpStatus.OK);
@@ -41,7 +41,7 @@ public class OppositionController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Long> postClient(HttpServletRequest request,
+    public ResponseEntity<Long> postOpposition(HttpServletRequest request,
                                            @RequestBody CreateOppositionRequest body) {
         try {
             long id = this.oppositionService.createOpposition(body);

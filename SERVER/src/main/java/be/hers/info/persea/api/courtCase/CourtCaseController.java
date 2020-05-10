@@ -30,7 +30,6 @@ public class CourtCaseController {
         this.courtCaseService = courtCaseService;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("user/{userId:[0-9]+}")
     public ResponseEntity<List<CourtCaseDto>> getCourtCasesByUserId(@PathVariable long userId) {
         List<CourtCaseDto> courtCases = this.courtCaseDao.findByUser(userId).stream()
@@ -40,9 +39,8 @@ public class CourtCaseController {
         return new ResponseEntity<>(courtCases, HttpStatus.OK);
     }
 
-    //@CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("")
-    public ResponseEntity<Long> postClient(HttpServletRequest request,
+    public ResponseEntity<Long> postCourtCase(HttpServletRequest request,
                                            @RequestBody CreateCourtCaseRequest body) {
         try {
             long id = this.courtCaseService.createCourtCase(body);
