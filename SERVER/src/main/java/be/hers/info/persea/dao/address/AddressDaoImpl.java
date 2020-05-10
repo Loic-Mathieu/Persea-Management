@@ -3,6 +3,7 @@ package be.hers.info.persea.dao.address;
 import be.hers.info.persea.model.address.Address;
 import be.hers.info.persea.model.contibutor.Client;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,24 +19,26 @@ public class AddressDaoImpl implements AddressDao {
     private EntityManager em;
 
     @Override
+    @Transactional
     public void addOne(Address newElement) {
-
+        this.em.persist(newElement);
     }
 
     @Override
     public void addAll(List<Address> newElements) {
-
+        newElements.forEach(this.em::persist);
     }
 
     @Override
+    @Transactional
     public Address getById(long id) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaQuery<Address> cq = cb.createQuery(Address.class);
 
         Root<Address> addressRoot = cq.from(Address.class);
         cq.where(cb.equal(addressRoot.get("id"), id));
 
-        return em.createQuery(cq).getSingleResult();
+        return this.em.createQuery(cq).getSingleResult();
     }
 
     @Override
