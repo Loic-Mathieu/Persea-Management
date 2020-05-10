@@ -1,7 +1,6 @@
 package be.hers.info.persea.dao.address;
 
 import be.hers.info.persea.model.address.Address;
-import be.hers.info.persea.model.contibutor.Client;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
