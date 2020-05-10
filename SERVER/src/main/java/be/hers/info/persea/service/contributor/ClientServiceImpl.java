@@ -6,7 +6,8 @@ import be.hers.info.persea.exceptions.BadRequestException;
 import be.hers.info.persea.model.address.Address;
 import be.hers.info.persea.model.contibutor.Client;
 import be.hers.info.persea.model.contibutor.Gender;
-import be.hers.info.persea.request.CreateClientRequest;
+import be.hers.info.persea.request.contributor.CreateClientRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component(value = "serviceClient")
@@ -20,6 +21,7 @@ public class ClientServiceImpl implements ClientService {
         return true;
     }
 
+    @Autowired
     public ClientServiceImpl(ClientDao clientDao, AddressDao addressDao) {
         assert clientDao != null;
         assert addressDao != null;

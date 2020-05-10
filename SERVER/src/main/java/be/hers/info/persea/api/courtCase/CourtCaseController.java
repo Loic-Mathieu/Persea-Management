@@ -2,8 +2,7 @@ package be.hers.info.persea.api.courtCase;
 
 import be.hers.info.persea.dao.courtcase.CourtCaseDao;
 import be.hers.info.persea.dto.courtCase.CourtCaseDto;
-import be.hers.info.persea.request.CreateClientRequest;
-import be.hers.info.persea.request.CreateCourtCaseRequest;
+import be.hers.info.persea.request.courtCase.CreateCourtCaseRequest;
 import be.hers.info.persea.service.courtCase.CourtCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

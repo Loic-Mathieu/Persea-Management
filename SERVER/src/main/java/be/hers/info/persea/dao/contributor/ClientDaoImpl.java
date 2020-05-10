@@ -3,6 +3,7 @@ package be.hers.info.persea.dao.contributor;
 import be.hers.info.persea.model.contibutor.Client;
 import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,13 +22,15 @@ public class ClientDaoImpl implements ClientDao {
 
     /*  === CRUD === */
     @Override
+    @Transactional
     public void addOne(Client newElement) {
-        // Todo implements method
+        this.em.persist(newElement);
     }
 
     @Override
+    @Transactional
     public void addAll(List<Client> newElements) {
-
+        newElements.forEach(em::persist);
     }
 
     @Override

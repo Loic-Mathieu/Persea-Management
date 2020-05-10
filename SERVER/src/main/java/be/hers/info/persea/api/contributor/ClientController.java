@@ -3,7 +3,7 @@ package be.hers.info.persea.api.contributor;
 import be.hers.info.persea.dao.contributor.ClientDao;
 import be.hers.info.persea.dto.contributor.ClientDto;
 import be.hers.info.persea.model.contibutor.Client;
-import be.hers.info.persea.request.CreateClientRequest;
+import be.hers.info.persea.request.contributor.CreateClientRequest;
 import be.hers.info.persea.service.contributor.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,14 +29,12 @@ public class ClientController {
         this.clientDao = clientDao;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/{id:[0-9]+}")
     public ResponseEntity<ClientDto> getClient(@PathVariable long id) {
         Client client = this.clientDao.getById(id);
         return new ResponseEntity<>(new ClientDto(client), HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("")
     public ResponseEntity<List<ClientDto>> getClients() {
         List<ClientDto> clients = this.clientDao.find(null).stream()
@@ -46,7 +44,6 @@ public class ClientController {
         return new ResponseEntity<>(clients, HttpStatus.OK);
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("")
     public ResponseEntity<Long> postClient(HttpServletRequest request,
                                            @RequestBody CreateClientRequest body) {

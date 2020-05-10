@@ -6,12 +6,10 @@ import be.hers.info.persea.dao.courtcase.CourtCaseDao;
 import be.hers.info.persea.model.contibutor.Client;
 import be.hers.info.persea.model.contibutor.Opposition;
 import be.hers.info.persea.model.courtCase.CourtCase;
-import be.hers.info.persea.request.CreateCourtCaseRequest;
+import be.hers.info.persea.request.courtCase.CreateCourtCaseRequest;
 import be.hers.info.persea.util.time.PerseaDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @Service
 public class CourtCaseServiceImpl implements CourtCaseService {

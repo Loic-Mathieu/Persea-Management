@@ -1,4 +1,4 @@
-package be.hers.info.persea.request;
+package be.hers.info.persea.request.contributor;
 
 import lombok.Getter;
 import lombok.Setter;

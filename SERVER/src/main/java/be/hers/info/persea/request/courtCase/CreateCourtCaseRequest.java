@@ -1,4 +1,4 @@
-package be.hers.info.persea.request;
+package be.hers.info.persea.request.courtCase;
 
 import lombok.Getter;
 
