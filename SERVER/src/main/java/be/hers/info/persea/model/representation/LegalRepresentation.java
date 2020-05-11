@@ -3,11 +3,13 @@ package be.hers.info.persea.model.representation;
 import be.hers.info.persea.model.PerseaAuditable;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Getter
+@Setter
 @Entity(name = "PERSEA_REPRESENTATION")
 @Table(name = "T_REPRESENTATION")
 public class LegalRepresentation extends PerseaAuditable {

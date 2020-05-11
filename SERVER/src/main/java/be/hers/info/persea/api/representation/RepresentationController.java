@@ -3,12 +3,14 @@ package be.hers.info.persea.api.representation;
 import be.hers.info.persea.dao.legalrepresentation.LegalRepresentationDao;
 import be.hers.info.persea.dto.representation.LegalRepresentationDto;
 import be.hers.info.persea.model.representation.LegalRepresentation;
+import be.hers.info.persea.request.representation.CreateLegalRepresentationRequest;
+import be.hers.info.persea.service.representation.LegalRepresentationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/rest/representations")
@@ -16,9 +18,15 @@ public class RepresentationController {
 
     private final LegalRepresentationDao legalRepresentationDao;
 
-    public RepresentationController(LegalRepresentationDao legalRepresentationDao) {
-        assert legalRepresentationDao != null;
+    private final LegalRepresentationService legalRepresentationService;
 
+    @Autowired
+    public RepresentationController(LegalRepresentationDao legalRepresentationDao,
+                                    LegalRepresentationService legalRepresentationService) {
+        assert legalRepresentationDao != null;
+        assert legalRepresentationService != null;
+
+        this.legalRepresentationService = legalRepresentationService;
         this.legalRepresentationDao = legalRepresentationDao;
     }
 
@@ -29,6 +37,17 @@ public class RepresentationController {
             return new ResponseEntity<>(new LegalRepresentationDto(legalRepresentation), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("")
+    public ResponseEntity<Long> postLegalRepresentation(HttpServletRequest request,
+                                                        @RequestBody CreateLegalRepresentationRequest body) {
+        try {
+            long id = this.legalRepresentationService.createLegalRepresentation(body);
+            return new ResponseEntity<>(id, HttpStatus.CREATED);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(0L, HttpStatus.BAD_REQUEST);
         }
     }
 

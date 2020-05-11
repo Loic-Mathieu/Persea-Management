@@ -2,6 +2,7 @@ package be.hers.info.persea.dao.legalrepresentation;
 
 import be.hers.info.persea.model.representation.LegalRepresentation;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -16,16 +17,14 @@ public class LegalRepresentationDaoImpl implements LegalRepresentationDao {
     private  EntityManager em;
 
     @Override
+    @Transactional
     public void addOne(LegalRepresentation newElement) {
-        em.getTransaction().begin();
         em.persist(newElement);
-        System.out.println("Added" + newElement.getSubject());
-        em.getTransaction().commit();
     }
 
     @Override
     public void addAll(List<LegalRepresentation> newElements) {
-
+        newElements.forEach(this.em::persist);
     }
 
     @Override
