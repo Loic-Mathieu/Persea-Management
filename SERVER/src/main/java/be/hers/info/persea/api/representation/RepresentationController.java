@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/representations")
@@ -48,6 +50,33 @@ public class RepresentationController {
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         } catch (Exception ex) {
             return new ResponseEntity<>(0L, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // TODO merge in find
+    @GetMapping("/case/id/{caseId:[0-9]+}")
+    public ResponseEntity<List<LegalRepresentationDto>> getByCaseId(@PathVariable long caseId) {
+        try {
+            List<LegalRepresentationDto> legalRepresentations =
+                    this.legalRepresentationDao.findByCaseId(caseId).stream()
+                        .map(LegalRepresentationDto::new)
+                        .collect(Collectors.toList());
+            return new ResponseEntity<>(legalRepresentations, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/case/number/{caseNumber}")
+    public ResponseEntity<List<LegalRepresentationDto>> getByCaseId(@PathVariable String caseNumber) {
+        try {
+            List<LegalRepresentationDto> legalRepresentations =
+                    this.legalRepresentationDao.findByCaseNumber(caseNumber).stream()
+                        .map(LegalRepresentationDto::new)
+                        .collect(Collectors.toList());
+            return new ResponseEntity<>(legalRepresentations, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
