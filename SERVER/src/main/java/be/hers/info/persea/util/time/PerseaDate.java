@@ -1,5 +1,6 @@
 package be.hers.info.persea.util.time;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,5 +18,17 @@ public class PerseaDate {
     public static String getShortFormattedDate() {
         SimpleDateFormat formatter = new SimpleDateFormat(SHORT_FORMAT);
         return formatter.format(new Date());
+    }
+
+    public static Date parseDate(String date) {
+        return PerseaDate.parseDate(date, PerseaDate.STANDARD_FORMAT);
+    }
+
+    public static Date parseDate(String date, String pattern) {
+        try {
+            return new SimpleDateFormat(pattern).parse(date);
+        } catch (ParseException e) {
+           return null;
+        }
     }
 }
