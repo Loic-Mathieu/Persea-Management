@@ -59,5 +59,10 @@ public class User extends PerseaAuditable {
     private String mail;
 
     @ManyToMany
+    @JoinTable(
+            name = "TJ_USER_CASE",
+            joinColumns={@JoinColumn(name="refUser", referencedColumnName="idUser")},
+            inverseJoinColumns={@JoinColumn(name="refCase", referencedColumnName="idCase")}
+    )
     private List<CourtCase> courtCases;
 }

@@ -46,17 +46,32 @@ public class CourtCase extends PerseaAuditable {
     @Column(nullable = false)
     private long mainClientId;
     @ManyToMany()
+    @JoinTable(
+            name = "TJ_CLIENT_CASE",
+            inverseJoinColumns={@JoinColumn(name="refClient", referencedColumnName="idContributor")},
+            joinColumns={@JoinColumn(name="refCase", referencedColumnName="idCase")}
+    )
     List<Client> clients;
 
     @Column(nullable = false)
     private long mainOppositionId;
-    @ManyToMany
+    @ManyToMany()
+    @JoinTable(
+            name = "TJ_OPPOSITION_CASE",
+            inverseJoinColumns={@JoinColumn(name="refOpposition", referencedColumnName="idContributor")},
+            joinColumns={@JoinColumn(name="refCase", referencedColumnName="idCase")}
+    )
     List<Opposition> oppositions;
 
     @OneToMany(mappedBy = "courtCase")
     private List<LegalRepresentation> legalRepresentations;
 
     @ManyToMany
+    @JoinTable(
+            name = "TJ_USER_CASE",
+            inverseJoinColumns={@JoinColumn(name="refUser", referencedColumnName="idUser")},
+            joinColumns={@JoinColumn(name="refCase", referencedColumnName="idCase")}
+    )
     private List<User> owners;
 
     public CaseState getState() {
