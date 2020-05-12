@@ -2,6 +2,7 @@ package be.hers.info.persea.api.courtCase;
 
 import be.hers.info.persea.dao.courtcase.CourtCaseDao;
 import be.hers.info.persea.dto.courtCase.CourtCaseDto;
+import be.hers.info.persea.filter.courtCase.CourtCaseFilter;
 import be.hers.info.persea.request.courtCase.CreateCourtCaseRequest;
 import be.hers.info.persea.service.courtCase.CourtCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +31,18 @@ public class CourtCaseController {
         this.courtCaseService = courtCaseService;
     }
 
-    @GetMapping("user/{userId:[0-9]+}")
-    public ResponseEntity<List<CourtCaseDto>> getCourtCasesByUserId(@PathVariable long userId) {
-        List<CourtCaseDto> courtCases = this.courtCaseDao.findByUser(userId).stream()
+    @GetMapping("")
+    public ResponseEntity<List<CourtCaseDto>> getCourtCasesByUserId(@ModelAttribute CourtCaseFilter filter) {
+        try {
+            List<CourtCaseDto> courtCases = this.courtCaseDao.find(filter).stream()
                 .map(CourtCaseDto::new)
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(courtCases, HttpStatus.OK);
+            return new ResponseEntity<>(courtCases, HttpStatus.OK);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("")
@@ -46,7 +52,6 @@ public class CourtCaseController {
             long id = this.courtCaseService.createCourtCase(body);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         } catch (Exception ex) {
-            System.err.println(ex.getMessage());
             return new ResponseEntity<>(0L, HttpStatus.BAD_REQUEST);
         }
     }
