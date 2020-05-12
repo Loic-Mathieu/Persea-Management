@@ -2,6 +2,7 @@ package be.hers.info.persea.api.contributor;
 
 import be.hers.info.persea.dao.contributor.ClientDao;
 import be.hers.info.persea.dto.contributor.ClientDto;
+import be.hers.info.persea.filter.contributor.ClientFilter;
 import be.hers.info.persea.model.contibutor.Client;
 import be.hers.info.persea.request.contributor.CreateClientRequest;
 import be.hers.info.persea.service.contributor.ClientService;
@@ -36,8 +37,8 @@ public class ClientController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<ClientDto>> getClients() {
-        List<ClientDto> clients = this.clientDao.find(null).stream()
+    public ResponseEntity<List<ClientDto>> getClients(@ModelAttribute ClientFilter filter) {
+        List<ClientDto> clients = this.clientDao.find(filter).stream()
                 .map(ClientDto::new)
                 .collect(Collectors.toList());
 
