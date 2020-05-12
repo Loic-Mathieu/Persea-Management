@@ -1,5 +1,6 @@
 package be.hers.info.persea.dao.courtcase;
 
+import be.hers.info.persea.filter.Filter;
 import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import org.springframework.stereotype.Component;
@@ -13,13 +14,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import java.util.List;
-import java.util.Map;
 
 @Component(value = "daoCourtCase")
 public class CourtCaseDaoImpl implements CourtCaseDao {
     @PersistenceContext(name = "localDatabase", type = PersistenceContextType.TRANSACTION)
     private EntityManager em;
 
+    /*  CRUD    */
     @Override
     @Transactional
     public void addOne(CourtCase newElement) {
@@ -52,9 +53,16 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
 
     }
 
+    /*  FILTERS */
     @Override
-    public List<CourtCase> find(Map<String, String> filter) {
-        return null;
+    public List<CourtCase> find(Filter<CourtCase> filter) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<CourtCase> cq = cb.createQuery(CourtCase.class);
+
+        Root<CourtCase> courtCaseRoot = cq.from(CourtCase.class);
+
+        cq.where(filter.doFilter(cb, courtCaseRoot));
+        return em.createQuery(cq).getResultList();
     }
 
     @Override

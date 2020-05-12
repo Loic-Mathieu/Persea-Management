@@ -1,5 +1,6 @@
 package be.hers.info.persea.dao.contributor;
 
+import be.hers.info.persea.filter.Filter;
 import be.hers.info.persea.model.contibutor.Client;
 import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import java.util.List;
-import java.util.Map;
 
 @Component(value = "daoClient")
 public class ClientDaoImpl implements ClientDao {
@@ -58,15 +58,13 @@ public class ClientDaoImpl implements ClientDao {
 
     /*  === FILTERS === */
     @Override
-    public List<Client> find(Map<String, String> filter) {
+    public List<Client> find(Filter<Client> filter) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
+
         Root<Client> clientRoot = cq.from(Client.class);
 
-        if (filter == null) {
-            return em.createQuery(cq).getResultList();
-        }
-
-        throw new NotImplementedException("Can't be filtered");
+        cq.where(filter.doFilter(cb, clientRoot));
+        return em.createQuery(cq).getResultList();
     }
 }

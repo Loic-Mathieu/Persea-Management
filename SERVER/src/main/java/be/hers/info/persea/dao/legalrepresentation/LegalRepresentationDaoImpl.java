@@ -1,5 +1,6 @@
 package be.hers.info.persea.dao.legalrepresentation;
 
+import be.hers.info.persea.filter.Filter;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.model.representation.LegalRepresentation;
 import org.springframework.stereotype.Component;
@@ -50,28 +51,13 @@ public class LegalRepresentationDaoImpl implements LegalRepresentationDao {
     }
 
     @Override
-    public List<LegalRepresentation> findByCaseNumber(String caseNumber) {
+    public List<LegalRepresentation> find(Filter<LegalRepresentation> filter) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<LegalRepresentation> cq = cb.createQuery(LegalRepresentation.class);
 
         Root<LegalRepresentation> legalRepresentationRoot = cq.from(LegalRepresentation.class);
-        Join<LegalRepresentation, CourtCase> legalRepresentationCourtCaseJoin =
-                legalRepresentationRoot.join("courtCase");
 
-        cq.where(cb.equal(legalRepresentationCourtCaseJoin.get("caseNumber"), caseNumber));
-        return em.createQuery(cq).getResultList();
-    }
-
-    @Override
-    public List<LegalRepresentation> findByCaseId(long caseId) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<LegalRepresentation> cq = cb.createQuery(LegalRepresentation.class);
-
-        Root<LegalRepresentation> legalRepresentationRoot = cq.from(LegalRepresentation.class);
-        Join<LegalRepresentation, CourtCase> legalRepresentationCourtCaseJoin =
-                legalRepresentationRoot.join("courtCase");
-
-        cq.where(cb.equal(legalRepresentationCourtCaseJoin.get("id"), caseId));
+        cq.where(filter.doFilter(cb, legalRepresentationRoot));
         return em.createQuery(cq).getResultList();
     }
 }

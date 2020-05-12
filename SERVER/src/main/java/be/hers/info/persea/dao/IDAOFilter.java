@@ -1,8 +1,9 @@
 package be.hers.info.persea.dao;
 
+import be.hers.info.persea.filter.Filter;
+
 import java.util.List;
-import java.util.Map;
 
 public interface IDAOFilter<T> {
-        List<T> find(Map<String, String> filter);
+        List<T> find(Filter<T> filter);
 }

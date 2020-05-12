@@ -2,6 +2,7 @@ package be.hers.info.persea.api.representation;
 
 import be.hers.info.persea.dao.legalrepresentation.LegalRepresentationDao;
 import be.hers.info.persea.dto.representation.LegalRepresentationDto;
+import be.hers.info.persea.filter.representation.RepresentationFilter;
 import be.hers.info.persea.model.representation.LegalRepresentation;
 import be.hers.info.persea.request.representation.CreateLegalRepresentationRequest;
 import be.hers.info.persea.service.representation.LegalRepresentationService;
@@ -32,6 +33,19 @@ public class RepresentationController {
         this.legalRepresentationDao = legalRepresentationDao;
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<LegalRepresentationDto>> test(@ModelAttribute RepresentationFilter body) {
+        try {
+            List<LegalRepresentationDto> legalRepresentations =
+                    this.legalRepresentationDao.find(body).stream()
+                            .map(LegalRepresentationDto::new)
+                            .collect(Collectors.toList());
+            return new ResponseEntity<>(legalRepresentations, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/{representationId:[0-9]+}")
     public ResponseEntity<LegalRepresentationDto> getLegalRepresentation(@PathVariable long representationId) {
         try {
@@ -50,33 +64,6 @@ public class RepresentationController {
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         } catch (Exception ex) {
             return new ResponseEntity<>(0L, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    // TODO merge in find
-    @GetMapping("/case/id/{caseId:[0-9]+}")
-    public ResponseEntity<List<LegalRepresentationDto>> getByCaseId(@PathVariable long caseId) {
-        try {
-            List<LegalRepresentationDto> legalRepresentations =
-                    this.legalRepresentationDao.findByCaseId(caseId).stream()
-                        .map(LegalRepresentationDto::new)
-                        .collect(Collectors.toList());
-            return new ResponseEntity<>(legalRepresentations, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @GetMapping("/case/number/{caseNumber}")
-    public ResponseEntity<List<LegalRepresentationDto>> getByCaseId(@PathVariable String caseNumber) {
-        try {
-            List<LegalRepresentationDto> legalRepresentations =
-                    this.legalRepresentationDao.findByCaseNumber(caseNumber).stream()
-                        .map(LegalRepresentationDto::new)
-                        .collect(Collectors.toList());
-            return new ResponseEntity<>(legalRepresentations, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
