@@ -4,6 +4,8 @@ import be.hers.info.persea.model.PerseaAuditable;
 import be.hers.info.persea.model.address.Address;
 import be.hers.info.persea.model.contibutor.Gender;
 import be.hers.info.persea.model.courtCase.CourtCase;
+import be.hers.info.persea.model.representation.LegalRepresentation;
+import be.hers.info.persea.model.time.TimePeriod;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -57,6 +59,9 @@ public class User extends PerseaAuditable {
 
     @Column(nullable = false, unique=true)
     private String mail;
+
+    @OneToMany(mappedBy = "owner")
+    private List<TimePeriod> timePeriods;
 
     @ManyToMany
     @JoinTable(
