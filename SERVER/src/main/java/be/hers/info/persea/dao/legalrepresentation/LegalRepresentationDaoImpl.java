@@ -1,7 +1,6 @@
 package be.hers.info.persea.dao.legalrepresentation;
 
 import be.hers.info.persea.filter.Filter;
-import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.model.representation.LegalRepresentation;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +11,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 
 import java.util.List;
