@@ -1,6 +1,6 @@
-package be.hers.info.persea.util.documents.word;
+package be.hers.info.persea.util.documents.text.word;
 
-import be.hers.info.persea.util.documents.PerseaFileWriter;
+import be.hers.info.persea.util.documents.text.PerseaFileWriter;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
