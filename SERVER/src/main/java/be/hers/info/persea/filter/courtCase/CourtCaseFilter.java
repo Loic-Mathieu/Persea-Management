@@ -38,7 +38,7 @@ public class CourtCaseFilter implements Filter<CourtCase> {
                     userJoin.get("id"),
                     this.owner
             ));
-            System.out.println(owner);
+            System.out.println("FILTER " + owner);
         }
 
         if (mainClientId != null) {

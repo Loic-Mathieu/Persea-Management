@@ -40,7 +40,7 @@ public class CourtCaseController {
 
             return new ResponseEntity<>(courtCases, HttpStatus.OK);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println("44"+e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
