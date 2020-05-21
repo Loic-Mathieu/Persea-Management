@@ -30,8 +30,20 @@ public class CourtCaseServiceImpl implements CourtCaseService {
         this.oppositionDao = oppositionDao;
     }
 
-    private String generateCaseNumber(Client client, Opposition opposition, String date) {
-        return "PH_" + client.getLastName().toUpperCase();
+    /**
+     * creates a valid case number with given information
+     * @param client main client of a case
+     * @param opposition main opposition of a case
+     * @return {clientName}_{oppositionName}_{date}
+     */
+    private String generateCaseNumber(Client client, Opposition opposition) {
+        String clientName = client.getLastName();
+        String oppositionName = opposition.getLastName();
+
+        // Takes three first letters of the names and adds the current date
+        return (clientName.length() < 3 ? clientName : clientName.substring(0, 3)).toUpperCase()
+                + "_" + (oppositionName.length() < 3 ? oppositionName : oppositionName.substring(0, 3)).toUpperCase()
+                + "_" + PerseaDate.getShortFormattedDate();
     }
 
     @Override
@@ -41,16 +53,15 @@ public class CourtCaseServiceImpl implements CourtCaseService {
 
         CourtCase newCourtCase = new CourtCase(generateCaseNumber(
                 client,
-                opposition,
-                PerseaDate.getStandardFormattedDate()
+                opposition
         ));
 
         newCourtCase.setMainClientId(client.getId());
-        // newCourtCase.setMainOppositionId(opposition.getId());
-        newCourtCase.setMainOppositionId(0);
+        newCourtCase.setMainOppositionId(opposition.getId());
 
-        // newCourtCase.getClients().add(client);
-        // newCourtCase.getOppositions().add(opposition);
+        // Create lists
+        newCourtCase.getClients().add(client);
+        newCourtCase.getOppositions().add(opposition);
 
         this.courtCaseDao.addOne(newCourtCase);
         return newCourtCase.getId();

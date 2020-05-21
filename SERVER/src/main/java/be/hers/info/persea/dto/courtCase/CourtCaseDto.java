@@ -37,6 +37,7 @@ public class CourtCaseDto {
     // TODO dates
 
     public CourtCaseDto(CourtCase courtCase) {
+        this.id = courtCase.getId();
         this.caseNumber = courtCase.getCaseNumber();
         this.state = courtCase.getStateType().name();
 

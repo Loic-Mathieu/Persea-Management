@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/courtCases")
+@CrossOrigin(origins = "http://localhost:4200")
 public class CourtCaseController {
 
     private final CourtCaseDao courtCaseDao;
@@ -25,14 +26,14 @@ public class CourtCaseController {
     @Autowired
     public CourtCaseController(CourtCaseDao courtCaseDao, CourtCaseService courtCaseService) {
         assert courtCaseDao != null;
-        assert  courtCaseService != null;
+        assert courtCaseService != null;
 
         this.courtCaseDao = courtCaseDao;
         this.courtCaseService = courtCaseService;
     }
 
     @GetMapping("")
-    public ResponseEntity<List<CourtCaseDto>> getCourtCasesByUserId(@ModelAttribute CourtCaseFilter filter) {
+    public ResponseEntity<List<CourtCaseDto>> getAllCourtCases(@ModelAttribute CourtCaseFilter filter) {
         try {
             List<CourtCaseDto> courtCases = this.courtCaseDao.find(filter).stream()
                 .map(CourtCaseDto::new)
@@ -44,9 +45,30 @@ public class CourtCaseController {
         }
     }
 
+    @GetMapping("/size")
+    public ResponseEntity<Long> getAllCourtCasesSize(@ModelAttribute CourtCaseFilter filter) {
+        try {
+            long size = this.courtCaseDao.getSize(filter);
+            return new ResponseEntity<>(size, HttpStatus.OK);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return new ResponseEntity<>(-1L, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{id:[0-9]+}")
+    public ResponseEntity<CourtCaseDto> getAllCourtCasesSize(@PathVariable long id) {
+        try {
+            CourtCaseDto courtCase = new CourtCaseDto(this.courtCaseDao.getById(id));
+            return new ResponseEntity<>(courtCase, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("")
     public ResponseEntity<Long> postCourtCase(HttpServletRequest request,
-                                           @RequestBody CreateCourtCaseRequest body) {
+                                              @RequestBody CreateCourtCaseRequest body) {
         try {
             long id = this.courtCaseService.createCourtCase(body);
             return new ResponseEntity<>(id, HttpStatus.CREATED);

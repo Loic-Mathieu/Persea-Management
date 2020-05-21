@@ -1,6 +1,7 @@
 package be.hers.info.persea.dao.courtcase;
 
 import be.hers.info.persea.filter.Filter;
+import be.hers.info.persea.filter.courtCase.CourtCaseFilter;
 import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import org.springframework.stereotype.Component;
@@ -60,9 +61,17 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
         CriteriaQuery<CourtCase> cq = cb.createQuery(CourtCase.class);
 
         Root<CourtCase> courtCaseRoot = cq.from(CourtCase.class);
-
         cq.where(filter.doFilter(cb, courtCaseRoot));
-        return em.createQuery(cq).getResultList();
+
+        CourtCaseFilter courtCaseFilter  = (CourtCaseFilter) filter;
+        if(courtCaseFilter.getPageSize() == null || courtCaseFilter.getPageNumber() == null) {
+            return em.createQuery(cq).getResultList();
+        }
+
+        return em.createQuery(cq)
+                .setFirstResult((courtCaseFilter.getPageNumber() * courtCaseFilter.getPageSize()) + 1)
+                .setMaxResults(courtCaseFilter.getPageSize())
+                .getResultList();
     }
 
     @Override
@@ -75,5 +84,17 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
 
         cq.where(cb.equal(courtCaseUserJoin.get("id"), userId));
         return em.createQuery(cq).getResultList();
+    }
+
+    /*  CUSTOM  */
+    @Override
+    public long getSize(Filter<CourtCase> filter) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+
+        Root<CourtCase> courtCaseRoot = cq.from(CourtCase.class);
+
+        cq.select(cb.count(courtCaseRoot)).where(filter.doFilter(cb, courtCaseRoot));
+        return em.createQuery(cq).getSingleResult();
     }
 }

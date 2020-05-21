@@ -38,8 +38,6 @@ public class ClientDaoImpl implements ClientDao {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
 
-        System.out.println("OUI");
-
         Root<Client> clientRoot = cq.from(Client.class);
         cq.where(cb.equal(clientRoot.get("id"), id));
 
