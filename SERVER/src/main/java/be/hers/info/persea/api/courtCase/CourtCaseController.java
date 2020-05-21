@@ -4,7 +4,9 @@ import be.hers.info.persea.dao.courtcase.CourtCaseDao;
 import be.hers.info.persea.dto.courtCase.CourtCaseDto;
 import be.hers.info.persea.filter.courtCase.CourtCaseFilter;
 import be.hers.info.persea.request.courtCase.CreateCourtCaseRequest;
+import be.hers.info.persea.request.courtCase.UpdateCourtCaseState;
 import be.hers.info.persea.service.courtCase.CourtCaseService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

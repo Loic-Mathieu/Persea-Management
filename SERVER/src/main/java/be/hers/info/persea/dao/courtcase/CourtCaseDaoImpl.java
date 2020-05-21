@@ -50,8 +50,9 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
     }
 
     @Override
+    @Transactional
     public void update(long id, CourtCase newElement) {
-
+        this.em.persist(newElement);
     }
 
     /*  FILTERS */
@@ -61,29 +62,18 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
         CriteriaQuery<CourtCase> cq = cb.createQuery(CourtCase.class);
 
         Root<CourtCase> courtCaseRoot = cq.from(CourtCase.class);
-        cq.where(filter.doFilter(cb, courtCaseRoot));
+        cq.where(filter.doFilter(cb, courtCaseRoot)).distinct(true);
 
         CourtCaseFilter courtCaseFilter  = (CourtCaseFilter) filter;
         if(courtCaseFilter.getPageSize() == null || courtCaseFilter.getPageNumber() == null) {
             return em.createQuery(cq).getResultList();
         }
 
+        System.err.println(courtCaseFilter.getPageSize());
         return em.createQuery(cq)
                 .setFirstResult((courtCaseFilter.getPageNumber() * courtCaseFilter.getPageSize()) + 1)
                 .setMaxResults(courtCaseFilter.getPageSize())
                 .getResultList();
-    }
-
-    @Override
-    public List<CourtCase> findByUser(long userId) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<CourtCase> cq = cb.createQuery(CourtCase.class);
-
-        Root<CourtCase> courtCaseRoot = cq.from(CourtCase.class);
-        Join<CourtCase, User> courtCaseUserJoin = courtCaseRoot.join("owners");
-
-        cq.where(cb.equal(courtCaseUserJoin.get("id"), userId));
-        return em.createQuery(cq).getResultList();
     }
 
     /*  CUSTOM  */
@@ -94,7 +84,19 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
 
         Root<CourtCase> courtCaseRoot = cq.from(CourtCase.class);
 
-        cq.select(cb.count(courtCaseRoot)).where(filter.doFilter(cb, courtCaseRoot));
-        return em.createQuery(cq).getSingleResult();
+        cq.where(filter.doFilter(cb, courtCaseRoot));
+        return em.createQuery(cq.select(cb.countDistinct(courtCaseRoot))).getSingleResult();
+    }
+
+    @Override
+    public List<CourtCase> findByUser(long userId) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<CourtCase> cq = cb.createQuery(CourtCase.class);
+
+        Root<CourtCase> courtCaseRoot = cq.from(CourtCase.class);
+        Join<CourtCase, User> courtCaseUserJoin = courtCaseRoot.join("owners");
+
+        cq.where(cb.equal(courtCaseUserJoin.get("id"), userId)).distinct(true);
+        return em.createQuery(cq).getResultList();
     }
 }

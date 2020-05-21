@@ -76,7 +76,7 @@ public class CourtCase extends PerseaAuditable {
 
     public CaseState getState() {
         if (state == null) {
-            this.state = CaseStateContext.translateState(stateType);
+            this.state = CaseStateContext.getInstance().translateState(stateType);
         }
 
         return state;
@@ -92,5 +92,15 @@ public class CourtCase extends PerseaAuditable {
         this.oppositions = new ArrayList<>();
 
         this.legalRepresentations = new ArrayList<>();
+    }
+
+    /**
+     *
+     * @param date
+     * @return
+     */
+    public CaseState nextState(Date date) {
+        this.getState().nextState(this, date);
+        return this.state;
     }
 }
