@@ -79,4 +79,16 @@ public class CourtCaseController {
             return new ResponseEntity<>(0L, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/state/{id:[0-9]+}")
+    public ResponseEntity<Boolean> postCourtCase(@PathVariable long id,
+                                                 @RequestBody UpdateCourtCaseState updateCourtCaseState) {
+        try {
+            boolean isUpdated = this.courtCaseService.updateState(id, updateCourtCaseState.getRawDate());
+            return new ResponseEntity<>(isUpdated, HttpStatus.CREATED);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

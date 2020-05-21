@@ -11,6 +11,8 @@ import be.hers.info.persea.util.time.PerseaDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class CourtCaseServiceImpl implements CourtCaseService {
 
@@ -65,5 +67,17 @@ public class CourtCaseServiceImpl implements CourtCaseService {
 
         this.courtCaseDao.addOne(newCourtCase);
         return newCourtCase.getId();
+    }
+
+    @Override
+    public boolean updateState(long id, String rawDate) {
+        CourtCase courtCase = this.courtCaseDao.getById(id);
+
+        Date date = PerseaDate.parseDate(rawDate);
+        courtCase.nextState(date);
+
+        this.courtCaseDao.update(id, courtCase);
+
+        return true;
     }
 }
