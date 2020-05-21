@@ -15,9 +15,19 @@ public class PerseaDate {
         return formatter.format(new Date());
     }
 
+    public static String getStandardFormattedDate(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(STANDARD_FORMAT);
+        return formatter.format(date);
+    }
+
     public static String getShortFormattedDate() {
         SimpleDateFormat formatter = new SimpleDateFormat(SHORT_FORMAT);
         return formatter.format(new Date());
+    }
+
+    public static String getShortFormattedDate(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(SHORT_FORMAT);
+        return formatter.format(date);
     }
 
     public static Date parseDate(String date) {

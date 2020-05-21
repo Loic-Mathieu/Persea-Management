@@ -3,6 +3,7 @@ package be.hers.info.persea.dto.courtCase;
 import be.hers.info.persea.model.contibutor.Opposition;
 import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.courtCase.CourtCase;
+import be.hers.info.persea.util.time.PerseaDate;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -39,9 +40,12 @@ public class CourtCaseDto {
         this.caseNumber = courtCase.getCaseNumber();
         this.state = courtCase.getStateType().name();
 
-        this.creationDate = courtCase.getCreationDate() == null ? "" : courtCase.getCreationDate().toString();
-        this.closeDate = courtCase.getCloseDate() == null ? "" : courtCase.getCloseDate().toString();
-        this.paymentDate = courtCase.getPaymentDate() == null ? "" : courtCase.getPaymentDate().toString();
+        this.creationDate = courtCase.getCreationDate() == null ? ""
+                : PerseaDate.getStandardFormattedDate(courtCase.getCreationDate());
+        this.closeDate = courtCase.getCloseDate() == null ? ""
+                : PerseaDate.getStandardFormattedDate(courtCase.getCloseDate());
+        this.paymentDate = courtCase.getPaymentDate() == null ? ""
+                : PerseaDate.getStandardFormattedDate(courtCase.getPaymentDate());
 
         this.rate = 0;
 
@@ -51,11 +55,19 @@ public class CourtCaseDto {
 
         this.clients = new ArrayList<>();
         if (courtCase.getClients() != null) {
-            courtCase.getClients().forEach(client -> this.clients.add(client.getId()));
+            courtCase.getClients().forEach(client -> {
+                if (client.getId() != courtCase.getMainClientId()) {
+                    this.clients.add(client.getId());
+                }
+            });
         }
         this.oppositions = new ArrayList<>();
         if (courtCase.getOppositions() != null) {
-            courtCase.getOppositions().forEach(opposition -> this.oppositions.add(opposition.getId()));
+            courtCase.getOppositions().forEach(opposition -> {
+                if(opposition.getId() != courtCase.getMainOppositionId()) {
+                    this.oppositions.add(opposition.getId());
+                }
+            });
         }
         this.lawyers = new ArrayList<>();
         // TODO courtCase.getClients().forEach(client -> {this.clients.add(client.getId());});

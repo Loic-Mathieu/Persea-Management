@@ -40,7 +40,6 @@ public class CourtCaseController {
 
             return new ResponseEntity<>(courtCases, HttpStatus.OK);
         } catch (Exception e) {
-            System.err.println("44"+e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -52,6 +51,7 @@ public class CourtCaseController {
             long id = this.courtCaseService.createCourtCase(body);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         } catch (Exception ex) {
+            System.err.println(ex.getMessage());
             return new ResponseEntity<>(0L, HttpStatus.BAD_REQUEST);
         }
     }

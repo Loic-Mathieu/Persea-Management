@@ -67,4 +67,16 @@ public class ClientDaoImpl implements ClientDao {
         cq.where(filter.doFilter(cb, clientRoot));
         return em.createQuery(cq).getResultList();
     }
+
+    /*  CUSTOM  */
+    @Override
+    public List<Client> findByIds(List<Long> ids) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Client> cq = cb.createQuery(Client.class);
+
+        Root<Client> clientRoot = cq.from(Client.class);
+
+        cq.where(clientRoot.get("id").in(ids));
+        return em.createQuery(cq).getResultList();
+    }
 }

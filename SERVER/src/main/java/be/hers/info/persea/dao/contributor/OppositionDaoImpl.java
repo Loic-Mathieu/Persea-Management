@@ -1,5 +1,6 @@
 package be.hers.info.persea.dao.contributor;
 
+import be.hers.info.persea.filter.Filter;
 import be.hers.info.persea.model.contibutor.Opposition;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,5 +49,27 @@ public class OppositionDaoImpl implements OppositionDao {
     @Override
     public void update(long id, Opposition newElement) {
 
+    }
+
+    @Override
+    public List<Opposition> find(Filter<Opposition> filter) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Opposition> cq = cb.createQuery(Opposition.class);
+
+        Root<Opposition> oppositionRoot = cq.from(Opposition.class);
+        cq.where(filter.doFilter(cb, oppositionRoot));
+
+        return em.createQuery(cq).getResultList();
+    }
+
+    @Override
+    public List<Opposition> findByIds(List<Long> ids) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Opposition> cq = cb.createQuery(Opposition.class);
+
+        Root<Opposition> oppositionRoot = cq.from(Opposition.class);
+        cq.where(oppositionRoot.get("id").in(ids));
+
+        return em.createQuery(cq).getResultList();
     }
 }
