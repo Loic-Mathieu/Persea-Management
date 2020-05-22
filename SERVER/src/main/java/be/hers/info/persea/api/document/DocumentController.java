@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/rest/document")
+@CrossOrigin(origins = "http://localhost:4200")
 public class DocumentController {
 
     private DocumentService documentService;
