@@ -55,7 +55,13 @@ public class TimePeriodDaoImpl implements TimePeriodDao {
     /*  FILTERS */
     @Override
     public List<TimePeriod> find(Filter<TimePeriod> filter) {
-        return null;
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<TimePeriod> cq = cb.createQuery(TimePeriod.class);
+
+        Root<TimePeriod> timePeriodRoot = cq.from(TimePeriod.class);
+
+        cq.where(filter.doFilter(cb, timePeriodRoot)).distinct(true);
+        return em.createQuery(cq).getResultList();
     }
 
     @Override

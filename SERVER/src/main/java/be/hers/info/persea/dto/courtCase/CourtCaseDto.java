@@ -1,13 +1,12 @@
 package be.hers.info.persea.dto.courtCase;
 
-import be.hers.info.persea.model.contibutor.Opposition;
+import be.hers.info.persea.model.time.TimePeriod;
 import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.courtCase.CourtCase;
-import be.hers.info.persea.util.time.PerseaDate;
+import be.hers.info.persea.util.time.PerseaTime;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,11 +41,11 @@ public class CourtCaseDto {
         this.state = courtCase.getStateType().name();
 
         this.creationDate = courtCase.getCreationDate() == null ? ""
-                : PerseaDate.getStandardFormattedDate(courtCase.getCreationDate());
+                : PerseaTime.getStandardFormattedDate(courtCase.getCreationDate());
         this.closeDate = courtCase.getCloseDate() == null ? ""
-                : PerseaDate.getStandardFormattedDate(courtCase.getCloseDate());
+                : PerseaTime.getStandardFormattedDate(courtCase.getCloseDate());
         this.paymentDate = courtCase.getPaymentDate() == null ? ""
-                : PerseaDate.getStandardFormattedDate(courtCase.getPaymentDate());
+                : PerseaTime.getStandardFormattedDate(courtCase.getPaymentDate());
 
         this.rate = 0;
 
@@ -76,6 +75,8 @@ public class CourtCaseDto {
         this.owners = courtCase.getOwners().stream()
                 .map(User::getId)
                 .collect(Collectors.toList());
-        this.timePeriods = new ArrayList<>();
+        this.timePeriods = courtCase.getTimePeriods().stream()
+                .map(TimePeriod::getId)
+                .collect(Collectors.toList());
     }
 }

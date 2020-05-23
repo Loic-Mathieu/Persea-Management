@@ -6,7 +6,7 @@ import be.hers.info.persea.dao.user.UserDao;
 import be.hers.info.persea.model.time.PeriodType;
 import be.hers.info.persea.model.time.TimePeriod;
 import be.hers.info.persea.request.time.CreateTimePeriodRequest;
-import be.hers.info.persea.util.time.PerseaDate;
+import be.hers.info.persea.util.time.PerseaTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,9 +38,9 @@ public class TimePeriodServiceImpl implements TimePeriodService {
 
         // Dates
         String start = request.getDate() + " " + request.getHourStart() + ":" + request.getMinuteStart();
-        newTimePeriod.setStartTime(PerseaDate.parseDate(start, PerseaDate.DATE_HOUR_FORMAT));
+        newTimePeriod.setStartTime(PerseaTime.parseDate(start, PerseaTime.DATE_HOUR_FORMAT));
         String end = request.getDate() + " " + request.getHourStart() + ":" + request.getMinuteStart();
-        newTimePeriod.setStopTime(PerseaDate.parseDate(end, PerseaDate.DATE_HOUR_FORMAT));
+        newTimePeriod.setStopTime(PerseaTime.parseDate(end, PerseaTime.DATE_HOUR_FORMAT));
 
         // TODO
         newTimePeriod.setOwner(this.userDao.getById(1));
