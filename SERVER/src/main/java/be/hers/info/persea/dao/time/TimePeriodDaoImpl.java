@@ -60,6 +60,12 @@ public class TimePeriodDaoImpl implements TimePeriodDao {
 
     @Override
     public List<TimePeriod> findByIds(List<Long> ids) {
-        return null;
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<TimePeriod> cq = cb.createQuery(TimePeriod.class);
+
+        Root<TimePeriod> timePeriodRoot = cq.from(TimePeriod.class);
+
+        cq.where(timePeriodRoot.get("id").in(ids));
+        return em.createQuery(cq).getResultList();
     }
 }
