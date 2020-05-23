@@ -1,6 +1,8 @@
 package be.hers.info.persea.model.time;
 
 import be.hers.info.persea.model.PerseaAuditable;
+import be.hers.info.persea.model.bill.Bill;
+import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.model.user.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,8 +35,15 @@ public class TimePeriod extends PerseaAuditable {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
-    private Long refCourtCase;
+    @Column(name = "isBilled", nullable = false)
+    private boolean billed;
+
+    @ManyToOne
+    private Bill relatedBill;
+
+    @ManyToOne
+    @JoinColumn(name = "refCourtCase", nullable = false)
+    private CourtCase courtCase;
 
     @ManyToOne
     @JoinColumn(name = "refUser", nullable = false)

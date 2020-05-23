@@ -2,6 +2,7 @@ package be.hers.info.persea.dao.time;
 
 import be.hers.info.persea.filter.Filter;
 import be.hers.info.persea.model.time.TimePeriod;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -12,6 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
+@Component(value = "daoTimePeriod")
 public class TimePeriodDaoImpl implements TimePeriodDao {
     @PersistenceContext(name = "localDatabase", type = PersistenceContextType.TRANSACTION)
     private EntityManager em;
@@ -53,6 +55,11 @@ public class TimePeriodDaoImpl implements TimePeriodDao {
     /*  FILTERS */
     @Override
     public List<TimePeriod> find(Filter<TimePeriod> filter) {
+        return null;
+    }
+
+    @Override
+    public List<TimePeriod> findByIds(List<Long> ids) {
         return null;
     }
 }

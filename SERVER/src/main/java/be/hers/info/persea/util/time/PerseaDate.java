@@ -7,6 +7,8 @@ import java.util.Date;
 public class PerseaDate {
     public static final String STANDARD_FORMAT = "dd/MM/yyyy";
 
+    public static final String DATE_HOUR_FORMAT = "dd/MM/yyyy HH:mm";
+
     public static final String SHORT_FORMAT = "ddMMyyyy";
 
     /**/
