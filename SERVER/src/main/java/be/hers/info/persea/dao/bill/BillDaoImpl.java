@@ -8,6 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Component(value = "daoBill")
@@ -44,6 +47,23 @@ public class BillDaoImpl implements BillDao {
 
     @Override
     public List<Bill> find(Filter<Bill> filter) {
-        return null;
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Bill> cq = cb.createQuery(Bill.class);
+
+        Root<Bill> billRoot = cq.from(Bill.class);
+
+        cq.where(filter.doFilter(cb, billRoot)).distinct(true);
+        return em.createQuery(cq).getResultList();
+    }
+
+    @Override
+    public List<Bill> findByIds(List<Long> ids) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Bill> cq = cb.createQuery(Bill.class);
+
+        Root<Bill> billRoot = cq.from(Bill.class);
+
+        cq.where(billRoot.get("id").in(ids));
+        return em.createQuery(cq).getResultList();
     }
 }

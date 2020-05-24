@@ -18,6 +18,9 @@ public class Bill extends PerseaAuditable {
     @Column(name = "idBill", nullable = false)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String billNumber;
+
     @Column(name = "isPaid", nullable = false)
     private boolean paid;
 
@@ -36,14 +39,17 @@ public class Bill extends PerseaAuditable {
     public Bill() {}
 
     public long getTotalHours() {
-        return this.timePeriods.stream()
-                .map(timePeriod -> timePeriod.getDuration().toHours())
-                .mapToLong(Long::longValue)
-                .sum();
+        long totalHours = 0;
+        for (TimePeriod timePeriod : timePeriods) {
+            totalHours += timePeriod.getDuration().toHours();
+        }
+
+        return totalHours;
     }
 
     public double getTotalPrice() {
         double basePriceTotal = this.getTotalHours() * basePrice;
-        return basePriceTotal + (basePriceTotal * rate);
+        double finalPrice = basePriceTotal + (basePriceTotal * rate);
+        return Math.round(finalPrice * 100.0) / 100.0; // rounded to get only two digits
     }
 }
