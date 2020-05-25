@@ -6,7 +6,7 @@ import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.model.document.PerseaProperty;
 import be.hers.info.persea.model.document.Tag;
-import be.hers.info.persea.util.time.PerseaDate;
+import be.hers.info.persea.util.time.PerseaTime;
 import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Before;
@@ -64,7 +64,7 @@ public class TestDocumentServiceTestCreateDocument extends TestDocumentService {
             // expected result
             String expected = String.format("SOME TEXT %s %s %s",
                     courtCase.getCaseNumber(),
-                    PerseaDate.getStandardFormattedDate(),
+                    PerseaTime.getStandardFormattedDate(),
                     user.getLastName()
             );
 

@@ -2,6 +2,7 @@ package be.hers.info.persea.model.courtCase;
 
 import be.hers.info.persea.model.PerseaAuditable;
 import be.hers.info.persea.model.representation.LegalRepresentation;
+import be.hers.info.persea.model.time.TimePeriod;
 import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.contibutor.Client;
 import be.hers.info.persea.model.contibutor.Opposition;
@@ -65,6 +66,9 @@ public class CourtCase extends PerseaAuditable {
 
     @OneToMany(mappedBy = "courtCase")
     private List<LegalRepresentation> legalRepresentations;
+
+    @OneToMany(mappedBy = "courtCase")
+    private List<TimePeriod> timePeriods;
 
     @ManyToMany
     @JoinTable(

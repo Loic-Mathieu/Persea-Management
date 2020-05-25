@@ -7,7 +7,7 @@ import be.hers.info.persea.model.contibutor.Client;
 import be.hers.info.persea.model.contibutor.Opposition;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.request.courtCase.CreateCourtCaseRequest;
-import be.hers.info.persea.util.time.PerseaDate;
+import be.hers.info.persea.util.time.PerseaTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +45,7 @@ public class CourtCaseServiceImpl implements CourtCaseService {
         // Takes three first letters of the names and adds the current date
         return (clientName.length() < 3 ? clientName : clientName.substring(0, 3)).toUpperCase()
                 + "_" + (oppositionName.length() < 3 ? oppositionName : oppositionName.substring(0, 3)).toUpperCase()
-                + "_" + PerseaDate.getShortFormattedDate();
+                + "_" + PerseaTime.getShortFormattedDate();
     }
 
     @Override
@@ -73,7 +73,7 @@ public class CourtCaseServiceImpl implements CourtCaseService {
     public boolean updateState(long id, String rawDate) {
         CourtCase courtCase = this.courtCaseDao.getById(id);
 
-        Date date = PerseaDate.parseDate(rawDate);
+        Date date = PerseaTime.parseDate(rawDate);
         courtCase.nextState(date);
 
         this.courtCaseDao.update(id, courtCase);

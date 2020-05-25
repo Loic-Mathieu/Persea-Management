@@ -5,7 +5,7 @@ import be.hers.info.persea.dao.legalrepresentation.LegalRepresentationDao;
 import be.hers.info.persea.exceptions.BadRequestException;
 import be.hers.info.persea.model.representation.LegalRepresentation;
 import be.hers.info.persea.request.representation.CreateLegalRepresentationRequest;
-import be.hers.info.persea.util.time.PerseaDate;
+import be.hers.info.persea.util.time.PerseaTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +25,7 @@ public class LegalRepresentationServiceImpl implements LegalRepresentationServic
     }
 
     private boolean isRepresentationValid(CreateLegalRepresentationRequest body) {
-        return PerseaDate.parseDate(body.getDate()) != null;
+        return PerseaTime.parseDate(body.getDate()) != null;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class LegalRepresentationServiceImpl implements LegalRepresentationServic
         }
 
         LegalRepresentation newLegalRepresentation = new LegalRepresentation();
-        newLegalRepresentation.setDate(PerseaDate.parseDate(body.getDate()));
+        newLegalRepresentation.setDate(PerseaTime.parseDate(body.getDate()));
         newLegalRepresentation.setLocation(body.getLocation());
         newLegalRepresentation.setSubject(body.getSubject());
         newLegalRepresentation.setCourtCase(this.courtCaseDao.getById(body.getCourtCase()));
