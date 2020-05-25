@@ -14,6 +14,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 public class TestDocumentServiceTestCreateDocument extends TestDocumentService {
 
     final long CASE_ID = 10L;
@@ -21,7 +23,6 @@ public class TestDocumentServiceTestCreateDocument extends TestDocumentService {
     MultipartFile file;
 
     @Before
-    @SneakyThrows
     public void createFile() {
         this.file = Mockito.mock(MultipartFile.class);
 
@@ -30,7 +31,11 @@ public class TestDocumentServiceTestCreateDocument extends TestDocumentService {
         WordFileWriter fileWriter = new WordFileWriter();
         fileWriter.append(text);
 
-        Mockito.when(this.file.getBytes()).thenReturn(fileWriter.getOutputStream().toByteArray());
+        try {
+            Mockito.when(this.file.getBytes()).thenReturn(fileWriter.getOutputStream().toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

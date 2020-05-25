@@ -69,7 +69,6 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
             return em.createQuery(cq).getResultList();
         }
 
-        System.err.println(courtCaseFilter.getPageSize());
         return em.createQuery(cq)
                 .setFirstResult(courtCaseFilter.getPageNumber() * courtCaseFilter.getPageSize())
                 .setMaxResults(courtCaseFilter.getPageSize())

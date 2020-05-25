@@ -20,6 +20,10 @@ public class ClientFilter implements Filter<Client> {
     private Long caseId;
     private String caseNumber;
 
+    // Pagination
+    private Integer pageNumber;
+    private Integer pageSize;
+
     @Override
     public Predicate[] doFilter(CriteriaBuilder cb, Root<Client> root) {
         Join<Client, CourtCase> courtCaseJoin = root.join("courtCases");

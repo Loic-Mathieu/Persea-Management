@@ -59,6 +59,16 @@ public class ClientController {
         return new ResponseEntity<>(clients, HttpStatus.OK);
     }
 
+    @GetMapping("/size")
+    public ResponseEntity<Long> getClientsNumber(@ModelAttribute ClientFilter filter) {
+        try {
+            long size = this.clientDao.getSize(filter);
+            return new ResponseEntity<>(size, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("")
     public ResponseEntity<Long> postClient(HttpServletRequest request,
                                            @RequestBody CreateClientRequest body) {
