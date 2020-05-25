@@ -4,6 +4,7 @@ import be.hers.info.persea.dao.contributor.LawyerDao;
 import be.hers.info.persea.dto.contributor.LawyerDto;
 import be.hers.info.persea.filter.contributor.LawyerFilter;
 import be.hers.info.persea.model.contibutor.Lawyer;
+import be.hers.info.persea.request.contributor.CreateLawyerRequest;
 import be.hers.info.persea.service.contributor.LawyerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +60,16 @@ public class LawyerController {
             return new ResponseEntity<>(size, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("")
+    public ResponseEntity<Long> createLawyer(@RequestBody CreateLawyerRequest body) {
+        try {
+            long id = this.lawyerService.createLawyer(body);
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(0L, HttpStatus.BAD_REQUEST);
         }
     }
 
