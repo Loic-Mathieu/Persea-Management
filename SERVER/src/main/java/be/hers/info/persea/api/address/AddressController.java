@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/rest/addresses")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AddressController {
 
     private final AddressDao addressDao;
@@ -41,7 +42,7 @@ public class AddressController {
 
     @PostMapping("")
     public ResponseEntity<Long> postAddress(HttpServletRequest request,
-                                               @RequestBody CreateAddressRequest body) {
+                                            @RequestBody CreateAddressRequest body) {
         try {
             long id = this.addressService.createAddress(body);
             return new ResponseEntity<>(id, HttpStatus.CREATED);

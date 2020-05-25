@@ -58,6 +58,16 @@ public class OppositionController {
         }
     }
 
+    @GetMapping("/size")
+    public ResponseEntity<Long> getSize(@ModelAttribute OppositionFilter filter) {
+        try {
+            long size = this.oppositionDao.getSize(filter);
+            return new ResponseEntity<>(size, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/list")
     public ResponseEntity<List<OppositionDto>> findClients(@RequestParam List<Long> ids) {
         try {
