@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/representations")
+@CrossOrigin(origins = "http://localhost:4200")
 public class RepresentationController {
 
     private final LegalRepresentationDao legalRepresentationDao;
@@ -34,7 +35,7 @@ public class RepresentationController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<LegalRepresentationDto>> test(@ModelAttribute RepresentationFilter body) {
+    public ResponseEntity<List<LegalRepresentationDto>> getAllRepresentations(@ModelAttribute RepresentationFilter body) {
         try {
             List<LegalRepresentationDto> legalRepresentations =
                     this.legalRepresentationDao.find(body).stream()
@@ -43,6 +44,16 @@ public class RepresentationController {
             return new ResponseEntity<>(legalRepresentations, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/size")
+    public ResponseEntity<Long> getSize(@ModelAttribute RepresentationFilter body) {
+        try {
+            long size = this.legalRepresentationDao.getSize(body);
+            return new ResponseEntity<>(size, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(0L, HttpStatus.NOT_FOUND);
         }
     }
 

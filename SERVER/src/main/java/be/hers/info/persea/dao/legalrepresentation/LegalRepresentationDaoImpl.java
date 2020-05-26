@@ -1,6 +1,7 @@
 package be.hers.info.persea.dao.legalrepresentation;
 
 import be.hers.info.persea.filter.Filter;
+import be.hers.info.persea.filter.representation.RepresentationFilter;
 import be.hers.info.persea.model.representation.LegalRepresentation;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,7 +56,18 @@ public class LegalRepresentationDaoImpl implements LegalRepresentationDao {
 
         Root<LegalRepresentation> legalRepresentationRoot = cq.from(LegalRepresentation.class);
 
-        cq.where(filter.doFilter(cb, legalRepresentationRoot));
+        cq.where(filter.doFilter(cb, legalRepresentationRoot)).distinct(true);
         return em.createQuery(cq).getResultList();
+    }
+
+    @Override
+    public long getSize(RepresentationFilter filter) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+
+        Root<LegalRepresentation> legalRepresentationRoot = cq.from(LegalRepresentation.class);
+
+        cq.where(filter.doFilter(cb, legalRepresentationRoot)).distinct(true);
+        return em.createQuery(cq.select(cb.countDistinct(legalRepresentationRoot))).getSingleResult();
     }
 }
