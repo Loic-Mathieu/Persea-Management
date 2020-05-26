@@ -51,6 +51,7 @@ public class TimePeriodController {
             long id = this.timePeriodService.creatTimePeriod(body);
             return new ResponseEntity<>(id, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(0L, HttpStatus.BAD_REQUEST);
         }
     }

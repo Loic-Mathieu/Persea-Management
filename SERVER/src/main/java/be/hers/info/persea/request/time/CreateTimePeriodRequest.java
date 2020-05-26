@@ -4,15 +4,14 @@ import lombok.Getter;
 
 @Getter
 public class CreateTimePeriodRequest {
-    String date;
+    private String date;
 
-    int hourStart;
-    int minuteStart;
+    private String startTime;
+    private String stopTime;
 
-    int hourEnd;
-    int minuteEnd;
+    private long courtCase;
 
-    long caseId;
+    private String description;
 
-    String description;
+    private String type;
 }

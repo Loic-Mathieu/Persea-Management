@@ -31,15 +31,14 @@ public class TimePeriodServiceImpl implements TimePeriodService {
     public long creatTimePeriod(CreateTimePeriodRequest request) {
         TimePeriod newTimePeriod = new TimePeriod();
 
-        newTimePeriod.setCourtCase(this.courtCaseDao.getById(request.getCaseId()));
+        newTimePeriod.setCourtCase(this.courtCaseDao.getById(request.getCourtCase()));
         newTimePeriod.setDescription(request.getDescription());
-        // TODO
-        newTimePeriod.setPeriodType(PeriodType.OTHER);
+        newTimePeriod.setPeriodType(PeriodType.valueOf(request.getType()));
 
         // Dates
-        String start = request.getDate() + " " + request.getHourStart() + ":" + request.getMinuteStart();
+        String start = request.getDate() + " " + request.getStartTime();
         newTimePeriod.setStartTime(PerseaTime.parseDate(start, PerseaTime.DATE_HOUR_FORMAT));
-        String end = request.getDate() + " " + request.getHourStart() + ":" + request.getMinuteStart();
+        String end = request.getDate() + " " + request.getStopTime();
         newTimePeriod.setStopTime(PerseaTime.parseDate(end, PerseaTime.DATE_HOUR_FORMAT));
 
         // TODO
