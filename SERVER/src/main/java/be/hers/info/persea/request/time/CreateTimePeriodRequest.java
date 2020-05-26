@@ -11,6 +11,8 @@ public class CreateTimePeriodRequest {
 
     private long courtCase;
 
+    private double supplement;
+
     private String description;
 
     private String type;

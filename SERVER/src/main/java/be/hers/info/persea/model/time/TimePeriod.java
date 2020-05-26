@@ -38,6 +38,9 @@ public class TimePeriod extends PerseaAuditable {
     @Column(name = "isBilled", nullable = false)
     private boolean billed;
 
+    // money spend for this period
+    private double supplement;
+
     @ManyToOne
     private Bill relatedBill;
 
