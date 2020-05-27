@@ -14,7 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @RestController
-@RequestMapping("/rest/document")
+@RequestMapping("/document")
 @CrossOrigin(origins = "http://localhost:4200")
 public class DocumentController {
 
