@@ -1,8 +1,12 @@
 package be.hers.info.persea.service.options;
 
+import be.hers.info.persea.dao.options.OptionDao;
 import be.hers.info.persea.dao.tag.TagDao;
+import be.hers.info.persea.dto.options.AppOptions;
 import be.hers.info.persea.dto.options.TagOptions;
 import be.hers.info.persea.model.document.PerseaProperty;
+import be.hers.info.persea.model.options.Option;
+import be.hers.info.persea.request.options.SaveAppOptions;
 import be.hers.info.persea.request.options.SaveTagRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,10 +15,12 @@ import org.springframework.stereotype.Component;
 public class OptionServiceImpl implements OptionService {
 
     private final TagDao tagDao;
+    private final OptionDao optionDao;
 
     @Autowired
-    public OptionServiceImpl(TagDao tagDao) {
+    public OptionServiceImpl(TagDao tagDao, OptionDao optionDao) {
         this.tagDao = tagDao;
+        this.optionDao = optionDao;
     }
 
     @Override
@@ -47,5 +53,22 @@ public class OptionServiceImpl implements OptionService {
         tagDao.updateName(PerseaProperty.CASE_NUMBER, request.getCaseNumber());
         tagDao.updateName(PerseaProperty.MAIN_CLIENT_NAME, request.getClientName());
         tagDao.updateName(PerseaProperty.MAIN_CLIENT_FIRST_NAME, request.getClientFirstName());
+    }
+
+    @Override
+    public AppOptions getAppOptions() {
+        return null;
+    }
+
+    @Override
+    public void saveAppOptions(SaveAppOptions request) {
+        Option option = this.optionDao.getOptions();
+
+        option.setBasePrice(request.getBasePrice());
+
+        option.setLeftTagMember(request.getLeftTagMember());
+        option.setRightTagMember(request.getRightTagMember());
+
+        this.optionDao.updateOptions(option);
     }
 }
