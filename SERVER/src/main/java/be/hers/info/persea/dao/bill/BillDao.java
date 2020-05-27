@@ -13,4 +13,11 @@ public interface BillDao extends IDAOCrud<Bill>, IDAOFilter<Bill> {
      * @return
      */
     List<Bill> findByIds(List<Long> ids);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    long getLastNumber(long id);
 }

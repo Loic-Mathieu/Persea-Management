@@ -66,4 +66,15 @@ public class BillDaoImpl implements BillDao {
         cq.where(billRoot.get("id").in(ids));
         return em.createQuery(cq).getResultList();
     }
+
+    @Override
+    public long getLastNumber(long clientId) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+
+        Root<Bill> billRoot = cq.from(Bill.class);
+
+        cq.where(cb.equal(billRoot.get("refClient"), clientId));
+        return em.createQuery(cq.select(cb.countDistinct(billRoot))).getSingleResult();
+    }
 }

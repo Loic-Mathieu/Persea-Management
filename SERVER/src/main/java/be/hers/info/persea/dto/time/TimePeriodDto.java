@@ -7,6 +7,8 @@ import lombok.Getter;
 @Getter
 public class TimePeriodDto {
 
+    private final long id;
+
     // dd/MM/yyyy
     private final String date;
 
@@ -25,6 +27,8 @@ public class TimePeriodDto {
     private final long owner;
 
     public TimePeriodDto(TimePeriod timePeriod) {
+        this.id = timePeriod.getId();
+
         this.date = PerseaTime.getStandardFormattedDate(timePeriod.getStartTime());
 
         this.startTime = PerseaTime.getStandardFormattedHour(timePeriod.getStartTime());
