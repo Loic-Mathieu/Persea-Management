@@ -6,13 +6,15 @@ import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.model.document.PerseaProperty;
 import be.hers.info.persea.model.document.Tag;
-import be.hers.info.persea.util.time.PerseaDate;
+import be.hers.info.persea.util.time.PerseaTime;
 import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public class TestDocumentServiceTestCreateDocument extends TestDocumentService {
 
@@ -21,7 +23,6 @@ public class TestDocumentServiceTestCreateDocument extends TestDocumentService {
     MultipartFile file;
 
     @Before
-    @SneakyThrows
     public void createFile() {
         this.file = Mockito.mock(MultipartFile.class);
 
@@ -30,7 +31,11 @@ public class TestDocumentServiceTestCreateDocument extends TestDocumentService {
         WordFileWriter fileWriter = new WordFileWriter();
         fileWriter.append(text);
 
-        Mockito.when(this.file.getBytes()).thenReturn(fileWriter.getOutputStream().toByteArray());
+        try {
+            Mockito.when(this.file.getBytes()).thenReturn(fileWriter.getOutputStream().toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -64,7 +69,7 @@ public class TestDocumentServiceTestCreateDocument extends TestDocumentService {
             // expected result
             String expected = String.format("SOME TEXT %s %s %s",
                     courtCase.getCaseNumber(),
-                    PerseaDate.getStandardFormattedDate(),
+                    PerseaTime.getStandardFormattedDate(),
                     user.getLastName()
             );
 

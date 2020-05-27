@@ -1,6 +1,7 @@
 package be.hers.info.persea.dao.courtcase;
 
 import be.hers.info.persea.filter.Filter;
+import be.hers.info.persea.filter.courtCase.CourtCaseFilter;
 import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import org.springframework.stereotype.Component;
@@ -49,8 +50,9 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
     }
 
     @Override
+    @Transactional
     public void update(long id, CourtCase newElement) {
-
+        this.em.persist(newElement);
     }
 
     /*  FILTERS */
@@ -60,9 +62,29 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
         CriteriaQuery<CourtCase> cq = cb.createQuery(CourtCase.class);
 
         Root<CourtCase> courtCaseRoot = cq.from(CourtCase.class);
+        cq.where(filter.doFilter(cb, courtCaseRoot)).distinct(true);
+
+        CourtCaseFilter courtCaseFilter  = (CourtCaseFilter) filter;
+        if(courtCaseFilter.getPageSize() == null || courtCaseFilter.getPageNumber() == null) {
+            return em.createQuery(cq).getResultList();
+        }
+
+        return em.createQuery(cq)
+                .setFirstResult(courtCaseFilter.getPageNumber() * courtCaseFilter.getPageSize())
+                .setMaxResults(courtCaseFilter.getPageSize())
+                .getResultList();
+    }
+
+    /*  CUSTOM  */
+    @Override
+    public long getSize(Filter<CourtCase> filter) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+
+        Root<CourtCase> courtCaseRoot = cq.from(CourtCase.class);
 
         cq.where(filter.doFilter(cb, courtCaseRoot));
-        return em.createQuery(cq).getResultList();
+        return em.createQuery(cq.select(cb.countDistinct(courtCaseRoot))).getSingleResult();
     }
 
     @Override
@@ -73,7 +95,7 @@ public class CourtCaseDaoImpl implements CourtCaseDao {
         Root<CourtCase> courtCaseRoot = cq.from(CourtCase.class);
         Join<CourtCase, User> courtCaseUserJoin = courtCaseRoot.join("owners");
 
-        cq.where(cb.equal(courtCaseUserJoin.get("id"), userId));
+        cq.where(cb.equal(courtCaseUserJoin.get("id"), userId)).distinct(true);
         return em.createQuery(cq).getResultList();
     }
 }

@@ -2,6 +2,7 @@ package be.hers.info.persea.model.courtCase;
 
 import be.hers.info.persea.model.PerseaAuditable;
 import be.hers.info.persea.model.representation.LegalRepresentation;
+import be.hers.info.persea.model.time.TimePeriod;
 import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.contibutor.Client;
 import be.hers.info.persea.model.contibutor.Opposition;
@@ -66,6 +67,9 @@ public class CourtCase extends PerseaAuditable {
     @OneToMany(mappedBy = "courtCase")
     private List<LegalRepresentation> legalRepresentations;
 
+    @OneToMany(mappedBy = "courtCase")
+    private List<TimePeriod> timePeriods;
+
     @ManyToMany
     @JoinTable(
             name = "TJ_USER_CASE",
@@ -76,7 +80,7 @@ public class CourtCase extends PerseaAuditable {
 
     public CaseState getState() {
         if (state == null) {
-            this.state = CaseStateContext.translateState(stateType);
+            this.state = CaseStateContext.getInstance().translateState(stateType);
         }
 
         return state;
@@ -92,5 +96,15 @@ public class CourtCase extends PerseaAuditable {
         this.oppositions = new ArrayList<>();
 
         this.legalRepresentations = new ArrayList<>();
+    }
+
+    /**
+     *
+     * @param date
+     * @return
+     */
+    public CaseState nextState(Date date) {
+        this.getState().nextState(this, date);
+        return this.state;
     }
 }

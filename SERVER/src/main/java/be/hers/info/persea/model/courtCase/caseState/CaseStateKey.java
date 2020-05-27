@@ -8,9 +8,7 @@ public enum CaseStateKey {
     OPEN(CaseStateGroup.ACTIVE),
 
     // CLOSED
-    INVOICING(CaseStateGroup.CLOSED),
     WAITING_PAYMENT(CaseStateGroup.CLOSED),
-    PAYED(CaseStateGroup.CLOSED),
     UNPAID(CaseStateGroup.CLOSED),
 
     // ARCHIVED
@@ -35,9 +33,7 @@ public enum CaseStateKey {
                 return new CaseStateKey[]{OPEN};
             case CLOSED:
                 return new CaseStateKey[]{
-                        INVOICING,
                         WAITING_PAYMENT,
-                        PAYED,
                         UNPAID
                 };
             case ARCHIVED:

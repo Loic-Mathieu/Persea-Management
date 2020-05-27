@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class LegalRepresentationDto {
-
     private final long id;
     private final String subject;
     private final String location;

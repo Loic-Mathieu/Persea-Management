@@ -25,6 +25,12 @@ public class CourtCaseFilter implements Filter<CourtCase> {
     private Long mainOppositionId;
     private List<Long> oppositionIds;
 
+    // Pagination
+    private Integer pageNumber;
+    private Integer pageSize;
+
+    public CourtCaseFilter() {}
+
     @Override
     public Predicate[] doFilter(CriteriaBuilder cb, Root<CourtCase> root) {
         Join<CourtCase, User> userJoin = root.join("owners");
@@ -38,7 +44,7 @@ public class CourtCaseFilter implements Filter<CourtCase> {
                     userJoin.get("id"),
                     this.owner
             ));
-            System.out.println(owner);
+            System.out.println("FILTER " + owner);
         }
 
         if (mainClientId != null) {

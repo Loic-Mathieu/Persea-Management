@@ -1,6 +1,8 @@
 package be.hers.info.persea.dao.contributor;
 
 import be.hers.info.persea.filter.Filter;
+import be.hers.info.persea.filter.contributor.ClientFilter;
+import be.hers.info.persea.filter.courtCase.CourtCaseFilter;
 import be.hers.info.persea.model.contibutor.Client;
 import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.springframework.stereotype.Component;
@@ -38,8 +40,6 @@ public class ClientDaoImpl implements ClientDao {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
 
-        System.out.println("OUI");
-
         Root<Client> clientRoot = cq.from(Client.class);
         cq.where(cb.equal(clientRoot.get("id"), id));
 
@@ -64,7 +64,40 @@ public class ClientDaoImpl implements ClientDao {
 
         Root<Client> clientRoot = cq.from(Client.class);
 
+        cq.where(filter.doFilter(cb, clientRoot)).distinct(true);
+
+
+        ClientFilter clientFilter  = (ClientFilter) filter;
+        if(clientFilter.getPageSize() == null || clientFilter.getPageNumber() == null) {
+            return em.createQuery(cq).getResultList();
+        }
+
+        return em.createQuery(cq)
+                .setFirstResult(clientFilter.getPageNumber() * clientFilter.getPageSize())
+                .setMaxResults(clientFilter.getPageSize())
+                .getResultList();
+    }
+
+    /*  CUSTOM  */
+    @Override
+    public long getSize(Filter<Client> filter) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+
+        Root<Client> clientRoot = cq.from(Client.class);
+
         cq.where(filter.doFilter(cb, clientRoot));
+        return em.createQuery(cq.select(cb.countDistinct(clientRoot))).getSingleResult();
+    }
+
+    @Override
+    public List<Client> findByIds(List<Long> ids) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Client> cq = cb.createQuery(Client.class);
+
+        Root<Client> clientRoot = cq.from(Client.class);
+
+        cq.where(clientRoot.get("id").in(ids));
         return em.createQuery(cq).getResultList();
     }
 }

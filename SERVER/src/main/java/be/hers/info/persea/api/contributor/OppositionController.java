@@ -1,7 +1,9 @@
 package be.hers.info.persea.api.contributor;
 
 import be.hers.info.persea.dao.contributor.OppositionDao;
+import be.hers.info.persea.dto.contributor.ClientDto;
 import be.hers.info.persea.dto.contributor.OppositionDto;
+import be.hers.info.persea.filter.contributor.OppositionFilter;
 import be.hers.info.persea.model.contibutor.Opposition;
 import be.hers.info.persea.request.contributor.CreateOppositionRequest;
 import be.hers.info.persea.service.contributor.OppositionService;
@@ -12,9 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/oppositions")
+@CrossOrigin(origins = "http://localhost:4200")
 public class OppositionController {
 
     private final OppositionService oppositionService;
@@ -35,6 +40,42 @@ public class OppositionController {
         try {
             Opposition opposition = this.oppositionDao.getById(id);
             return new ResponseEntity<>(new OppositionDto(opposition), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<OppositionDto>> getOppositions(@ModelAttribute OppositionFilter filter) {
+        try {
+            List<OppositionDto> oppositions = this.oppositionDao.find(filter).stream()
+                    .map(OppositionDto::new)
+                    .collect(Collectors.toList());
+
+            return new ResponseEntity<>(oppositions, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/size")
+    public ResponseEntity<Long> getSize(@ModelAttribute OppositionFilter filter) {
+        try {
+            long size = this.oppositionDao.getSize(filter);
+            return new ResponseEntity<>(size, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<OppositionDto>> findClients(@RequestParam List<Long> ids) {
+        try {
+            List<OppositionDto> oppositions = this.oppositionDao.findByIds(ids).stream()
+                    .map(OppositionDto::new)
+                    .collect(Collectors.toList());
+
+            return new ResponseEntity<>(oppositions, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }

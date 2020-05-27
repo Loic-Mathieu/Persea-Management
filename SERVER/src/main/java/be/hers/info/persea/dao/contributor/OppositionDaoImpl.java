@@ -1,5 +1,8 @@
 package be.hers.info.persea.dao.contributor;
 
+import be.hers.info.persea.filter.Filter;
+import be.hers.info.persea.filter.contributor.ClientFilter;
+import be.hers.info.persea.filter.contributor.OppositionFilter;
 import be.hers.info.persea.model.contibutor.Opposition;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,5 +51,47 @@ public class OppositionDaoImpl implements OppositionDao {
     @Override
     public void update(long id, Opposition newElement) {
 
+    }
+
+    @Override
+    public List<Opposition> find(Filter<Opposition> filter) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Opposition> cq = cb.createQuery(Opposition.class);
+
+        Root<Opposition> oppositionRoot = cq.from(Opposition.class);
+        cq.where(filter.doFilter(cb, oppositionRoot)).distinct(true);
+
+
+        OppositionFilter oppositionFilter  = (OppositionFilter) filter;
+        if(oppositionFilter.getPageSize() == null || oppositionFilter.getPageNumber() == null) {
+            return em.createQuery(cq).getResultList();
+        }
+
+        return em.createQuery(cq)
+                .setFirstResult(oppositionFilter.getPageNumber() * oppositionFilter.getPageSize())
+                .setMaxResults(oppositionFilter.getPageSize())
+                .getResultList();
+    }
+
+    @Override
+    public long getSize(OppositionFilter filter) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+
+        Root<Opposition> oppositionRoot = cq.from(Opposition.class);
+        cq.where(filter.doFilter(cb, oppositionRoot));
+
+        return em.createQuery(cq.select(cb.countDistinct(oppositionRoot))).getSingleResult();
+    }
+
+    @Override
+    public List<Opposition> findByIds(List<Long> ids) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Opposition> cq = cb.createQuery(Opposition.class);
+
+        Root<Opposition> oppositionRoot = cq.from(Opposition.class);
+        cq.where(oppositionRoot.get("id").in(ids));
+
+        return em.createQuery(cq).getResultList();
     }
 }

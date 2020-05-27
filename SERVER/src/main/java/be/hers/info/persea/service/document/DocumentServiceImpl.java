@@ -13,15 +13,23 @@ import be.hers.info.persea.exceptions.TagCreationException;
 import be.hers.info.persea.model.user.User;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.model.document.Tag;
+import be.hers.info.persea.util.time.PerseaTime;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.NoResultException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,6 +58,29 @@ public class DocumentServiceImpl implements DocumentService {
         fileOutputStream.write(multipartFile.getBytes());
         fileOutputStream.close();
         return tempFile;
+    }
+
+    private String createPdf(CourtCase courtCase, String content) throws FileNotFoundException, DocumentException {
+        Document document = new Document();
+        String path = "folders/" + courtCase.getCaseNumber() + "/documents";
+        String fileName = courtCase.getCaseNumber() + "__" + PerseaTime.getShortFormattedDate() + ".pdf";
+
+        // check path
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        PdfWriter.getInstance(document, new FileOutputStream(path + "/" + fileName));
+
+        document.open();
+        Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+        Chunk chunk = new Chunk(content, font);
+
+        document.add(chunk);
+        document.close();
+
+        return fileName;
     }
 
     /*  === PUBLIC FUNCTIONS ===    */
@@ -108,7 +139,7 @@ public class DocumentServiceImpl implements DocumentService {
                 throw new TagCreationException("No tag found in the document");
             }
 
-            return buffer.toString();
+            return this.createPdf(courtCase, buffer.toString());
         } catch (IOException e) {
             throw new TagCreationException("The file cannot be opened");
         } catch (InvalidFormatException e) {
@@ -117,6 +148,22 @@ public class DocumentServiceImpl implements DocumentService {
             throw new TagCreationException("Missing target data");
         } catch (InvalidTagException e) {
             throw new TagCreationException("Bad Tag: \n" + e.getMessage());
+        } catch (DocumentException e) {
+            throw new TagCreationException("Can not create pdf" + e.getMessage());
         }
+    }
+
+    @Override
+    public Path getDocument(long caseId, String fileName) {
+        CourtCase courtCase = this.courtCaseDao.getById(caseId);
+        String path = "folders/" + courtCase.getCaseNumber() + "/documents";
+        return Paths.get(path, fileName);
+    }
+
+    @Override
+    public Resource getFile(long caseId, String fileName) {
+        CourtCase courtCase = this.courtCaseDao.getById(caseId);
+        String path = "folders/" + courtCase.getCaseNumber();
+        return new ClassPathResource(path + "/ filename");
     }
 }

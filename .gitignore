@@ -1,4 +1,4 @@
-HELP.md
+SERVER/HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
@@ -29,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# uploads
+folders/

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/clients")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ClientController {
     private ClientDao clientDao;
     private ClientService clientService;
@@ -36,6 +37,19 @@ public class ClientController {
         return new ResponseEntity<>(new ClientDto(client), HttpStatus.OK);
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<List<ClientDto>> findClients(@RequestParam List<Long> ids) {
+        try {
+            List<ClientDto> clients = this.clientDao.findByIds(ids).stream()
+                    .map(ClientDto::new)
+                    .collect(Collectors.toList());
+
+            return new ResponseEntity<>(clients, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("")
     public ResponseEntity<List<ClientDto>> getClients(@ModelAttribute ClientFilter filter) {
         List<ClientDto> clients = this.clientDao.find(filter).stream()
@@ -43,6 +57,16 @@ public class ClientController {
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(clients, HttpStatus.OK);
+    }
+
+    @GetMapping("/size")
+    public ResponseEntity<Long> getClientsNumber(@ModelAttribute ClientFilter filter) {
+        try {
+            long size = this.clientDao.getSize(filter);
+            return new ResponseEntity<>(size, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("")
