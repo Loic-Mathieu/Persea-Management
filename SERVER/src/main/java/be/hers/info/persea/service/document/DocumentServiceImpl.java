@@ -18,6 +18,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,7 +63,7 @@ public class DocumentServiceImpl implements DocumentService {
     private String createPdf(CourtCase courtCase, String content) throws FileNotFoundException, DocumentException {
         Document document = new Document();
         String path = "folders/" + courtCase.getCaseNumber() + "/documents";
-        String fileName = courtCase.getCaseNumber() + "__" + PerseaTime.getShortFormattedDate();
+        String fileName = courtCase.getCaseNumber() + "__" + PerseaTime.getShortFormattedDate() + ".pdf";
 
         // check path
         File file = new File(path);
@@ -151,12 +154,16 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Resource getDocument(long caseId, String fileName) {
-        return null;
+    public Path getDocument(long caseId, String fileName) {
+        CourtCase courtCase = this.courtCaseDao.getById(caseId);
+        String path = "folders/" + courtCase.getCaseNumber() + "/documents";
+        return Paths.get(path, fileName);
     }
 
     @Override
     public Resource getFile(long caseId, String fileName) {
-        return null;
+        CourtCase courtCase = this.courtCaseDao.getById(caseId);
+        String path = "folders/" + courtCase.getCaseNumber();
+        return new ClassPathResource(path + "/ filename");
     }
 }
