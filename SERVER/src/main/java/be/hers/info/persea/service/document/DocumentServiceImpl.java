@@ -6,6 +6,10 @@ import be.hers.info.persea.dao.user.UserDao;
 import be.hers.info.persea.interpreter.CourtCasePropertyInterpreter;
 import be.hers.info.persea.interpreter.UserPropertyInterpreter;
 import be.hers.info.persea.interpreter.UtilPropertyInterpreter;
+import be.hers.info.persea.model.bill.Bill;
+import be.hers.info.persea.model.time.TimePeriod;
+import be.hers.info.persea.util.documents.sheet.PerseaSheetBuilder;
+import be.hers.info.persea.util.documents.sheet.xls.XlsBuilder;
 import be.hers.info.persea.util.documents.text.PerseaFileReader;
 import be.hers.info.persea.util.documents.text.word.WordFileReader;
 import be.hers.info.persea.exceptions.InvalidTagException;
@@ -151,6 +155,50 @@ public class DocumentServiceImpl implements DocumentService {
         } catch (DocumentException e) {
             throw new TagCreationException("Can not create pdf" + e.getMessage());
         }
+    }
+
+    @Override
+    public String createBill(Bill bill, long caseId) throws IOException {
+        CourtCase courtCase = this.courtCaseDao.getById(caseId);
+        PerseaSheetBuilder sheetBuilder = new XlsBuilder();
+
+        // header
+        sheetBuilder.append(0, 0, "Subject").append(1, 0, "cost");
+
+        // body
+        int index = 1;
+        for (TimePeriod timePeriod : bill.getTimePeriods()){
+            long hoursNumber = timePeriod.getDuration().toHours();
+            sheetBuilder.append(0, index, timePeriod.getDescription())
+                        .append(1, index, hoursNumber + "H")
+                        .append(2, index, (hoursNumber * bill.getBasePrice()) + "€");
+            if (timePeriod.getSupplement() > 0) {
+                sheetBuilder.append(3, index, "+" + timePeriod.getSupplement() + "€");
+            }
+
+            index++;
+        }
+
+        // total
+        sheetBuilder.append(0, index + 2, "Total :")
+                    .append(1, index + 2, bill.getTotalHours() + "h")
+                    .append(2, index + 2, bill.getTotalPrice() + "€")
+                    .append(3, index + 2, (bill.getRate() * 100) + "%")
+                    .changeTitle(bill.getBillNumber());
+
+
+        String path = "folders/" + courtCase.getCaseNumber() + "/bills";
+        String fileName = bill.getBillNumber() + ".xls";
+
+        // check path
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        sheetBuilder.build(path + "/" + fileName);
+
+        return fileName;
     }
 
     @Override

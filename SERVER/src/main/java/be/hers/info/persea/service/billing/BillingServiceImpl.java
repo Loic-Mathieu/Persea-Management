@@ -6,11 +6,13 @@ import be.hers.info.persea.model.bill.Bill;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.model.time.TimePeriod;
 import be.hers.info.persea.request.bill.CreateBillRequest;
+import be.hers.info.persea.service.document.DocumentService;
 import be.hers.info.persea.util.time.PerseaTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 @Component(value = "serviceBill")
@@ -18,13 +20,17 @@ public class BillingServiceImpl implements BillingService {
     private final BillDao billDao;
     private final TimePeriodDao timePeriodDao;
 
+    private final DocumentService documentService;
+
     @Autowired
-    public BillingServiceImpl(BillDao billDao, TimePeriodDao timePeriodDao) {
+    public BillingServiceImpl(BillDao billDao, TimePeriodDao timePeriodDao, DocumentService documentService) {
         assert billDao != null;
         assert timePeriodDao != null;
+        assert documentService != null;
 
         this.billDao = billDao;
         this.timePeriodDao = timePeriodDao;
+        this.documentService = documentService;
     }
 
     private boolean isValidBill(CreateBillRequest request) {
@@ -46,7 +52,7 @@ public class BillingServiceImpl implements BillingService {
 
     @Override
     @Transactional
-    public long createBill(CreateBillRequest request) {
+    public long createBill(CreateBillRequest request) throws IOException {
         if (!isValidBill(request)) {
             throw new IllegalArgumentException();
         }
@@ -67,6 +73,7 @@ public class BillingServiceImpl implements BillingService {
             // this.timePeriodDao.update(timePeriod.getId(), timePeriod);
         });
         this.billDao.addOne(newBill);
+        this.documentService.createBill(newBill, timePeriods.get(0).getCourtCase().getId());
 
         return newBill.getId();
     }
