@@ -13,11 +13,21 @@ public interface DocumentService {
     /**
      *
      * @param file
+     * @param fileName
      * @param caseId
      * @return
      * @throws TagCreationException
      */
-    String createDocument(MultipartFile file, long caseId) throws TagCreationException;
+    String createDocument(MultipartFile file, String fileName, long caseId) throws TagCreationException;
+
+    /**
+     *
+     * @param file
+     * @param fileName
+     * @param caseId
+     * @return
+     */
+    String uploadFile(MultipartFile file, String fileName, long caseId) throws IOException;
 
     /**
      *

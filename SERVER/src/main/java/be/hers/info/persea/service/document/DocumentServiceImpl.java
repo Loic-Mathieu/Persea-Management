@@ -65,10 +65,13 @@ public class DocumentServiceImpl implements DocumentService {
         return tempFile;
     }
 
-    private String createPdf(CourtCase courtCase, String content) throws FileNotFoundException, DocumentException {
+    private String createPdf(CourtCase courtCase, String content, String fileName)
+                    throws FileNotFoundException, DocumentException {
         Document document = new Document();
         String path = "folders/" + courtCase.getCaseNumber() + "/documents";
-        String fileName = courtCase.getCaseNumber() + "__" + PerseaTime.getShortFormattedDate() + ".pdf";
+        String finalFileName = fileName
+                                + "__" + courtCase.getCaseNumber()
+                                + "__" + PerseaTime.getShortFormattedDate() + ".pdf";
 
         // check path
         File file = new File(path);
@@ -76,7 +79,7 @@ public class DocumentServiceImpl implements DocumentService {
             file.mkdirs();
         }
 
-        PdfWriter.getInstance(document, new FileOutputStream(path + "/" + fileName));
+        PdfWriter.getInstance(document, new FileOutputStream(path + "/" + finalFileName));
 
         document.open();
         Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
@@ -85,13 +88,13 @@ public class DocumentServiceImpl implements DocumentService {
         document.add(chunk);
         document.close();
 
-        return fileName;
+        return finalFileName;
     }
 
     /*  === PUBLIC FUNCTIONS ===    */
 
     @Override
-    public String createDocument(MultipartFile file, long caseId) throws TagCreationException {
+    public String createDocument(MultipartFile file, String fileName, long caseId) throws TagCreationException {
         try {
             PerseaFileReader fileReader = new WordFileReader(this.createTemporaryFile(file));
             String rawText = fileReader.readFile();
@@ -144,7 +147,7 @@ public class DocumentServiceImpl implements DocumentService {
                 throw new TagCreationException("No tag found in the document");
             }
 
-            return this.createPdf(courtCase, buffer.toString());
+            return this.createPdf(courtCase, buffer.toString(), fileName);
         } catch (IOException e) {
             throw new TagCreationException("The file cannot be opened");
         } catch (InvalidFormatException e) {
@@ -156,6 +159,26 @@ public class DocumentServiceImpl implements DocumentService {
         } catch (DocumentException e) {
             throw new TagCreationException("Can not create pdf" + e.getMessage());
         }
+    }
+
+    @Override
+    public String uploadFile(MultipartFile multipartFile, String fileName, long caseId) throws IOException {
+        CourtCase courtCase = this.courtCaseDao.getById(caseId);
+
+        String path = "folders/" + courtCase.getCaseNumber();
+        String finalFileName = PerseaTime.getShortFormattedDate() + "__" + fileName;
+
+        // check path
+        File folder = new File(path);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        FileOutputStream fileOutputStream = new FileOutputStream(path + "/" + finalFileName);
+        fileOutputStream.write(multipartFile.getBytes());
+        fileOutputStream.close();
+
+        return finalFileName;
     }
 
     @Override

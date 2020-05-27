@@ -19,6 +19,7 @@ import java.io.IOException;
 public class TestDocumentServiceTestCreateDocument extends TestDocumentService {
 
     final long CASE_ID = 10L;
+    final String FILE_NAME = "name";
 
     MultipartFile file;
 
@@ -64,7 +65,7 @@ public class TestDocumentServiceTestCreateDocument extends TestDocumentService {
         Mockito.when(this.tagDao.getByName("C")).thenReturn(tag_c);
 
         try {
-            String result = this.documentService.createDocument(this.file, CASE_ID);
+            String result = this.documentService.createDocument(this.file, FILE_NAME, CASE_ID);
 
             // expected result
             String expected = String.format("SOME TEXT %s %s %s",

@@ -27,13 +27,27 @@ public class DocumentController {
         this.documentService = documentService;
     }
 
-    @PostMapping("/generate/doc")
-    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file,
-                                                   @RequestParam("caseSeq") Long caseSeq) {
+    @PostMapping("/{id:[0-9]+}/document/")
+    public ResponseEntity<String> uploadSchematic(@RequestParam("file") MultipartFile file,
+                                                  @RequestParam("fileName") String fileName,
+                                                  @PathVariable long id) {
         try {
-            String text = this.documentService.createDocument(file, caseSeq);
-            return ResponseEntity.status(HttpStatus.OK).body(text);
+            String finalFileName = this.documentService.createDocument(file, fileName, id);
+            return ResponseEntity.status(HttpStatus.OK).body(finalFileName);
         } catch (TagCreationException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id:[0-9]+}")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
+                                             @RequestParam("fileName") String fileName,
+                                             @PathVariable long id) {
+        try {
+            String finalFileName = this.documentService.uploadFile(file, fileName, id);
+            return ResponseEntity.status(HttpStatus.OK).body(finalFileName);
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
         }
