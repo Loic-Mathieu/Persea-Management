@@ -30,6 +30,7 @@ public class DocumentController {
             String text = this.documentService.createDocument(file, caseSeq);
             return ResponseEntity.status(HttpStatus.OK).body(text);
         } catch (TagCreationException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
         }
     }
