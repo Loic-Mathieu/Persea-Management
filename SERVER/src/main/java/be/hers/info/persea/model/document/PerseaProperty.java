@@ -10,15 +10,15 @@ public enum PerseaProperty {
     // DYNAMIC
     CURRENT_DATE(PropertyType.DYNAMIC),
 
-    // STATIC
-    USER_NAME(PropertyType.STATIC);
+    // USER
+    USER_NAME(PropertyType.USER);
 
     private final PropertyType propertyType;
 
     public static enum PropertyType {
         CASE,
         DYNAMIC,
-        STATIC
+        USER
     }
 
     PerseaProperty(PropertyType type) {

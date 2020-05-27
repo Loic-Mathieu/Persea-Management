@@ -22,8 +22,6 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -126,7 +124,7 @@ public class DocumentServiceImpl implements DocumentService {
                         case CASE:
                             translatedTag = courtCasePropertyInterpreter.interpret(tag.getProperty());
                             break;
-                        case STATIC:
+                        case USER:
                             translatedTag = userPropertyInterpreter.interpret(tag.getProperty());
                             break;
                         case DYNAMIC:
