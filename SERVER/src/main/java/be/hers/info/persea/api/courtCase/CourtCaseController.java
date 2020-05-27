@@ -7,6 +7,7 @@ import be.hers.info.persea.filter.courtCase.CourtCaseFilter;
 import be.hers.info.persea.filter.time.TimeFilter;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.request.courtCase.CreateCourtCaseRequest;
+import be.hers.info.persea.request.courtCase.LinkContributorRequest;
 import be.hers.info.persea.request.courtCase.UpdateCourtCaseState;
 import be.hers.info.persea.service.courtCase.CourtCaseService;
 
@@ -99,7 +100,46 @@ public class CourtCaseController {
         }
     }
 
-    @PutMapping("/state/{id:[0-9]+}")
+    @PostMapping("/{id:[0-9]+}/clients")
+    public ResponseEntity<Boolean> addClient(HttpServletRequest request,
+                                             @PathVariable long id,
+                                             @RequestBody LinkContributorRequest body) {
+        try {
+            this.courtCaseService.linkClient(id, body);
+            return new ResponseEntity<>(true, HttpStatus.CREATED);
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/{id:[0-9]+}/oppositions")
+    public ResponseEntity<Boolean> addOpposition(HttpServletRequest request,
+                                                 @PathVariable long id,
+                                                 @RequestBody LinkContributorRequest body) {
+        try {
+            this.courtCaseService.linkOpposition(id, body);
+            return new ResponseEntity<>(true, HttpStatus.CREATED);
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/{id:[0-9]+}/lawyers")
+    public ResponseEntity<Boolean> addLawyer(HttpServletRequest request,
+                                             @PathVariable long id,
+                                             @RequestBody LinkContributorRequest body) {
+        try {
+            this.courtCaseService.linkClient(id, body);
+            return new ResponseEntity<>(true, HttpStatus.CREATED);
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/{id:[0-9]+}/state")
     public ResponseEntity<Boolean> postCourtCase(@PathVariable long id,
                                                  @RequestBody UpdateCourtCaseState updateCourtCaseState) {
         try {

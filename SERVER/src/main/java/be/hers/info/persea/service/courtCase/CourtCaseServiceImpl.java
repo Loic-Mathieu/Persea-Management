@@ -7,6 +7,7 @@ import be.hers.info.persea.model.contibutor.Client;
 import be.hers.info.persea.model.contibutor.Opposition;
 import be.hers.info.persea.model.courtCase.CourtCase;
 import be.hers.info.persea.request.courtCase.CreateCourtCaseRequest;
+import be.hers.info.persea.request.courtCase.LinkContributorRequest;
 import be.hers.info.persea.util.time.PerseaTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,6 +68,33 @@ public class CourtCaseServiceImpl implements CourtCaseService {
 
         this.courtCaseDao.addOne(newCourtCase);
         return newCourtCase.getId();
+    }
+
+    @Override
+    public void linkClient(long courtCaseId, LinkContributorRequest request) {
+        Client clientToAdd = this.clientDao.getById(request.getContributor());
+        CourtCase courtCaseToUpdate = this.courtCaseDao.getById(courtCaseId);
+
+        courtCaseToUpdate.getClients().add(clientToAdd);
+        this.courtCaseDao.update(courtCaseId, courtCaseToUpdate);
+    }
+
+    @Override
+    public void linkOpposition(long courtCaseId, LinkContributorRequest request) {
+        Opposition oppositionToAdd = this.oppositionDao.getById(request.getContributor());
+        CourtCase courtCaseToUpdate = this.courtCaseDao.getById(courtCaseId);
+
+        courtCaseToUpdate.getOppositions().add(oppositionToAdd);
+        this.courtCaseDao.update(courtCaseId, courtCaseToUpdate);
+    }
+
+    @Override
+    public void linkLawyer(long courtCaseId, LinkContributorRequest request) {
+        Client clientToAdd = this.clientDao.getById(request.getContributor());
+        CourtCase courtCaseToUpdate = this.courtCaseDao.getById(courtCaseId);
+
+        courtCaseToUpdate.getClients().add(clientToAdd);
+        this.courtCaseDao.update(courtCaseId, courtCaseToUpdate);
     }
 
     @Override
