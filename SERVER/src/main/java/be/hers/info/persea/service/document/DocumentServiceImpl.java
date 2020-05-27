@@ -28,15 +28,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.NoResultException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import static org.springframework.util.StreamUtils.BUFFER_SIZE;
 
 @Component(value = "serviceDocument")
 public class DocumentServiceImpl implements DocumentService {
@@ -186,7 +187,6 @@ public class DocumentServiceImpl implements DocumentService {
                     .append(3, index + 2, (bill.getRate() * 100) + "%")
                     .changeTitle(bill.getBillNumber());
 
-
         String path = "folders/" + courtCase.getCaseNumber() + "/bills";
         String fileName = bill.getBillNumber() + ".xls";
 
@@ -201,6 +201,68 @@ public class DocumentServiceImpl implements DocumentService {
         return fileName;
     }
 
+    private void zipDirectory(File folder, String parentFolder,
+                              ZipOutputStream zipOutputStream) throws FileNotFoundException, IOException {
+        for (File file : folder.listFiles()) {
+            if (file.isDirectory()) {
+                zipDirectory(file, parentFolder + "/" + file.getName(), zipOutputStream);
+                continue;
+            }
+            zipOutputStream.putNextEntry(new ZipEntry(parentFolder + "/" + file.getName()));
+            BufferedInputStream bis = new BufferedInputStream(
+                    new FileInputStream(file));
+            long bytesRead = 0;
+            byte[] bytesIn = new byte[BUFFER_SIZE];
+            int read = 0;
+            while ((read = bis.read(bytesIn)) != -1) {
+                zipOutputStream.write(bytesIn, 0, read);
+                bytesRead += read;
+            }
+            zipOutputStream.closeEntry();
+        }
+    }
+
+    private void zipFile(File file, ZipOutputStream zipOutputStream) throws FileNotFoundException, IOException {
+        zipOutputStream.putNextEntry(new ZipEntry(file.getName()));
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(
+                file));
+        long bytesRead = 0;
+        byte[] bytesIn = new byte[BUFFER_SIZE];
+        int read = 0;
+        while ((read = bis.read(bytesIn)) != -1) {
+            zipOutputStream.write(bytesIn, 0, read);
+            bytesRead += read;
+        }
+        zipOutputStream.closeEntry();
+    }
+
+    @Override
+    public Path getZip(long caseId) throws IOException {
+        CourtCase courtCase = this.courtCaseDao.getById(caseId);
+
+        String path = "folders/" + courtCase.getCaseNumber();
+
+        // check path
+        File folder = new File(path);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        File zip = File.createTempFile("TEMPORARY_ZIP_FILE", ".zip");
+        ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zip));
+        for (File file : folder.listFiles()) {
+            if (file.isDirectory()) {
+                zipDirectory(file, file.getName(), zos);
+            } else {
+                zipFile(file, zos);
+            }
+        }
+        zos.flush();
+        zos.close();
+
+        return Paths.get(zip.getPath());
+    }
+
     @Override
     public Path getDocument(long caseId, String fileName) {
         CourtCase courtCase = this.courtCaseDao.getById(caseId);
@@ -209,9 +271,9 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Resource getFile(long caseId, String fileName) {
+    public Path getBill(long caseId, String fileName) {
         CourtCase courtCase = this.courtCaseDao.getById(caseId);
-        String path = "folders/" + courtCase.getCaseNumber();
-        return new ClassPathResource(path + "/ filename");
+        String path = "folders/" + courtCase.getCaseNumber() + "/bills";
+        return Paths.get(path, fileName);
     }
 }

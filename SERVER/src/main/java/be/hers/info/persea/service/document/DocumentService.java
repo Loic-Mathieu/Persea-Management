@@ -5,6 +5,7 @@ import be.hers.info.persea.model.bill.Bill;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -29,6 +30,13 @@ public interface DocumentService {
     /**
      *
      * @param caseId
+     * @return
+     */
+    Path getZip(long caseId) throws IOException;
+
+    /**
+     *
+     * @param caseId
      * @param fileName
      * @return
      */
@@ -40,5 +48,5 @@ public interface DocumentService {
      * @param fileName
      * @return
      */
-    Resource getFile(long caseId, String fileName);
+    Path getBill(long caseId, String fileName);
 }

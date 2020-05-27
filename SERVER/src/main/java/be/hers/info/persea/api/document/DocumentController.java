@@ -50,21 +50,33 @@ public class DocumentController {
             response.addHeader("Content-Disposition", "attachment; filename=" + filename);
             Files.copy(path, response.getOutputStream());
             response.getOutputStream().flush();
+            response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @GetMapping("/{id:[0-9]+}/files/{filename:.+}")
+    @GetMapping("/{id:[0-9]+}/bill/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> getFile(HttpServletResponse response,
                                             @PathVariable String filename,
                                             @PathVariable long id) {
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+    }
+
+    @GetMapping("/{id:[0-9]+}")
+    @ResponseBody
+    public void getZip(HttpServletResponse response,
+                       @PathVariable long id) {
         try {
-            Resource resource = this.documentService.getFile(id, filename);
-            return ResponseEntity.status(HttpStatus.OK).body(resource);
+            Path path = this.documentService.getZip(id);
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment;filename=download.zip");
+            Files.copy(path, response.getOutputStream());
+            response.getOutputStream().flush();
+            response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+            e.printStackTrace();
         }
     }
 }
