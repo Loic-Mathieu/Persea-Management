@@ -3,7 +3,9 @@ package be.hers.info.persea.api.contributor;
 import be.hers.info.persea.dao.contributor.OppositionDao;
 import be.hers.info.persea.dto.contributor.ClientDto;
 import be.hers.info.persea.dto.contributor.OppositionDto;
+import be.hers.info.persea.dto.courtCase.CourtCaseDto;
 import be.hers.info.persea.filter.contributor.OppositionFilter;
+import be.hers.info.persea.model.contibutor.Lawyer;
 import be.hers.info.persea.model.contibutor.Opposition;
 import be.hers.info.persea.request.contributor.CreateOppositionRequest;
 import be.hers.info.persea.service.contributor.OppositionService;
@@ -43,6 +45,16 @@ public class OppositionController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/{id:[0-9]+}/cases")
+    public ResponseEntity<List<CourtCaseDto>> getCases(@PathVariable long id) {
+        Opposition opposition = this.oppositionDao.getById(id);
+        List<CourtCaseDto> linkedCases = opposition.getCourtCases().stream()
+                .map(CourtCaseDto::new)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(linkedCases, HttpStatus.OK);
     }
 
     @GetMapping("")

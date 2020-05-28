@@ -2,7 +2,9 @@ package be.hers.info.persea.api.contributor;
 
 import be.hers.info.persea.dao.contributor.LawyerDao;
 import be.hers.info.persea.dto.contributor.LawyerDto;
+import be.hers.info.persea.dto.courtCase.CourtCaseDto;
 import be.hers.info.persea.filter.contributor.LawyerFilter;
+import be.hers.info.persea.model.contibutor.Client;
 import be.hers.info.persea.model.contibutor.Lawyer;
 import be.hers.info.persea.request.contributor.CreateLawyerRequest;
 import be.hers.info.persea.service.contributor.LawyerService;
@@ -38,6 +40,16 @@ public class LawyerController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/{id:[0-9]+}/cases")
+    public ResponseEntity<List<CourtCaseDto>> getCases(@PathVariable long id) {
+        Lawyer lawyer = this.lawyerDao.getById(id);
+        List<CourtCaseDto> linkedCases = lawyer.getCourtCases().stream()
+                .map(CourtCaseDto::new)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(linkedCases, HttpStatus.OK);
     }
 
     @GetMapping("")

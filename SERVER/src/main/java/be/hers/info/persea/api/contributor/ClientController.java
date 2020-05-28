@@ -2,6 +2,7 @@ package be.hers.info.persea.api.contributor;
 
 import be.hers.info.persea.dao.contributor.ClientDao;
 import be.hers.info.persea.dto.contributor.ClientDto;
+import be.hers.info.persea.dto.courtCase.CourtCaseDto;
 import be.hers.info.persea.filter.contributor.ClientFilter;
 import be.hers.info.persea.model.contibutor.Client;
 import be.hers.info.persea.request.contributor.CreateClientRequest;
@@ -35,6 +36,16 @@ public class ClientController {
     public ResponseEntity<ClientDto> getClient(@PathVariable long id) {
         Client client = this.clientDao.getById(id);
         return new ResponseEntity<>(new ClientDto(client), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id:[0-9]+}/cases")
+    public ResponseEntity<List<CourtCaseDto>> getCases(@PathVariable long id) {
+        Client client = this.clientDao.getById(id);
+        List<CourtCaseDto> linkedCases = client.getCourtCases().stream()
+                .map(CourtCaseDto::new)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(linkedCases, HttpStatus.OK);
     }
 
     @GetMapping("/list")
